@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaleVerse — Worlds Beyond Words</title>
+<meta name="description" content="Discover your next favourite story at TaleVerse, a library of adventures, mysteries, fantasy and horror.">
+<style>
+:root {
+  --bg:#f7f5ff;
+  --surface:#ffffff;
+  --text:#24213b;
+  --muted:#77738d;
+  --primary:#7357e8;
+  --primary2:#a18bff;
+  --border:#e8e3f5;
+  --shadow:0 12px 35px #32216c12;
+}
+body.dark {
+  --bg:#151322;
+  --surface:#211e32;
+  --text:#f5f1ff;
+  --muted:#b6afce;
+  --border:#373149;
+  --shadow:0 12px 35px #0003;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  transition:background .3s,color .3s;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+  position:sticky;top:0;z-index:10;background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.nav{
+  max-width:1200px;margin:auto;padding:15px 22px;
+  display:flex;align-items:center;gap:20px;
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px;white-space:nowrap}
+.logo span{color:var(--primary)}
+.navlinks{display:flex;gap:20px;margin-left:auto}
+.navlinks a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:650}
+.navlinks a:hover{color:var(--primary)}
+.iconbtn,.secondary{
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--text);border-radius:12px;padding:10px 13px;
+}
+main{max-width:1200px;margin:auto;padding:25px 22px 65px}
+.hero{
+  overflow:hidden;position:relative;border-radius:28px;padding:58px 45px;
+  background:linear-gradient(115deg,#21163e,#5036a2 58%,#9479f7);
+  color:white;box-shadow:var(--shadow);
+}
+.hero:after{
+  content:"✦";position:absolute;right:8%;top:8%;font-size:180px;
+  color:#ffffff18;transform:rotate(12deg);pointer-events:none;
+}
+.eyebrow{
+  display:inline-block;background:#ffffff20;padding:8px 13px;
+  border-radius:50px;font-size:12px;letter-spacing:1px;font-weight:800;
+}
+.hero h1{font-size:clamp(36px,6vw,66px);line-height:1.06;max-width:650px;margin:20px 0}
+.hero p{max-width:550px;color:#e6deff;line-height:1.8}
+.primary{
+  border:0;border-radius:12px;padding:13px 19px;
+  background:var(--primary);color:white;font-weight:750;
+  transition:transform .2s,filter .2s;
+}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.hero .primary{background:white;color:#48328e;margin-top:12px}
+.section{margin-top:43px}
+.sectionhead{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;flex-wrap:wrap;margin-bottom:18px;
+}
+h2{margin:0;font-size:25px;letter-spacing:-.5px}
+.muted{color:var(--muted)}
+.searchrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:23px}
+.searchrow input,.searchrow select{
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);border-radius:12px;
+  padding:13px 15px;outline:none;
+}
+.searchrow input{flex:1;min-width:190px}
+.searchrow input:focus{border-color:var(--primary)}
+.categories{display:flex;gap:10px;flex-wrap:wrap}
+.chip{
+  padding:10px 16px;border:1px solid var(--border);
+  border-radius:30px;background:var(--surface);color:var(--muted);
+}
+.chip.active,.chip:hover{background:var(--primary);color:white;border-color:var(--primary)}
+.bookgrid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;
+}
+.book{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:19px;overflow:hidden;box-shadow:var(--shadow);
+  transition:transform .25s,border-color .25s;
+}
+.book:hover{transform:translateY(-5px);border-color:var(--primary2)}
+.cover{
+  height:190px;display:flex;align-items:center;justify-content:center;
+  font-size:66px;position:relative;
+}
+.cover:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,#0002,transparent 60%);
+}
+.cover span{filter:drop-shadow(0 5px 8px #0003)}
+.bookbody{padding:17px}
+.tag{font-size:11px;color:var(--primary);font-weight:800;text-transform:uppercase;letter-spacing:.7px}
+.book h3{font-size:17px;margin:8px 0}
+.book p{font-size:13px;color:var(--muted);line-height:1.6;min-height:40px}
+.bookbottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}
+.smallbtn{border:0;background:var(--primary);color:white;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:750}
+.empty{grid-column:1/-1;text-align:center;padding:45px 10px;color:var(--muted)}
+.feature{
+  display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:23px;padding:27px;
+}
+.featureart{
+  min-height:220px;border-radius:18px;display:grid;place-items:center;
+  font-size:95px;background:linear-gradient(135deg,#182d55,#437fa3,#b1d5db);
+}
+.feature h3{font-size:27px;margin:10px 0}
+footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;color:var(--muted);font-size:13px}
+.modal{
+  position:fixed;inset:0;z-index:30;background:#090714c9;
+  display:none;align-items:center;justify-content:center;padding:18px;
+}
+.modal.show{display:flex;animation:fadein .2s}
+.dialog{
+  background:var(--surface);color:var(--text);width:min(650px,100%);
+  max-height:88vh;overflow:auto;border-radius:22px;padding:25px;
+  box-shadow:0 25px 90px #0005;animation:rise .25s;
+}
+.dialogtop{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.dialog h2{margin:12px 0}
+.readtext{font-family:Georgia,serif;font-size:18px;line-height:1.9;white-space:pre-line}
+.readercontrols{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:15px 0}
+.readercontrols button{border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text);padding:8px 12px}
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:var(--text);color:var(--bg);padding:12px 18px;border-radius:12px;
+  z-index:50;display:none;max-width:90%;text-align:center;
+}
+.toast.show{display:block;animation:rise .2s}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.bookgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.navlinks{gap:12px}}
+@media(max-width:600px){
+  .nav{padding:13px;gap:10px}.logo{font-size:21px}
+  .navlinks{display:none}main{padding:16px 13px 45px}
+  .hero{padding:38px 23px}.hero:after{font-size:110px;right:0}
+  .bookgrid{gap:12px}.cover{height:145px;font-size:50px}
+  .bookbody{padding:12px}.book h3{font-size:15px}
+  .feature{grid-template-columns:1fr;padding:16px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="logo">Tale<span>Verse</span> ✦</div>
+    <nav class="navlinks">
+      <a href="#home">Home</a>
+      <a href="#discover">Discover</a>
+      <a href="#featured">Featured</a>
+    </nav>
+    <button class="iconbtn" id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <span class="eyebrow">✦ YOUR NEXT ADVENTURE STARTS HERE</span>
+    <h1>Worlds beyond<br>words.</h1>
+    <p>Step into unforgettable adventures, uncover dark mysteries, explore magical kingdoms, and find stories that stay with you long after the final page.</p>
+    <button class="primary" onclick="document.getElementById('discover').scrollIntoView({behavior:'smooth'})">Explore stories ↓</button>
+    <div class="searchrow">
+      <input id="search" type="search" placeholder="Search stories, authors, keywords..." aria-label="Search stories">
+      <select id="sort" aria-label="Sort stories">
+        <option value="featured">Featured first</option>
+        <option value="title">Title A–Z</option>
+        <option value="rating">Highest rated</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="section" id="discover">
+    <div class="sectionhead">
+      <h2>Discover stories</h2>
+      <span class="muted" id="count">0 stories</span>
+    </div>
+    <div class="categories" id="categories">
+      <button class="chip active" data-category="All">All stories</button>
+      <button class="chip" data-category="Adventure">Adventure</button>
+      <button class="chip" data-category="Fantasy">Fantasy</button>
+      <button class="chip" data-category="Horror">Horror</button>
+      <button class="chip" data-category="Mystery">Mystery</button>
+      <button class="chip" data-category="Sci-Fi">Sci-Fi</button>
+    </div>
+    <div class="bookgrid" id="bookgrid" style="margin-top:22px"></div>
+  </section>
+
+  <section class="section" id="featured">
+    <div class="sectionhead"><h2>For curious minds ✨</h2></div>
+    <div class="feature">
+      <div class="featureart">🚀</div>
+      <div>
+        <span class="tag">Explore the unknown</span>
+        <h3>Every story opens a new universe.</h3>
+        <p class="muted" style="line-height:1.8">From distant galaxies to enchanted forests, your next favourite world could be just one chapter away.</p>
+        <button class="primary" onclick="setCategory('Adventure')">Find an adventure</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="logo">Tale<span>Verse</span> ✦</div>
+  <p>Every world begins with a story.</p>
+  <p>© <span id="year"></span> TaleVerse · Made for story lovers</p>
+</footer>
+
+<div class="modal" id="reader" role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+  <div class="dialog">
+    <div class="dialogtop">
+      <span class="tag" id="readerCategory">STORY</span>
+      <button class="iconbtn" id="closeReader" aria-label="Close reader">✕</button>
+    </div>
+    <h2 id="readerTitle">Story title</h2>
+    <p class="muted" id="readerAuthor"></p>
+    <div class="readercontrols">
+      <button id="smaller">A−</button>
+      <button id="larger">A+</button>
+      <button id="bookmarkBtn">☆ Bookmark</button>
+      <span class="muted" id="readingStatus"></span>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--border)">
+    <div class="readtext" id="readtext"></div>
+    <p class="muted" style="font-size:12px;margin-top:25px">Demo reading experience. Your reading progress is saved on this device.</p>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const stories = [
+  {
+    id:"starfall", title:"The Map of Starfall", author:"TaleVerse Library",
+    category:"Adventure", emoji:"🗺️", color:"linear-gradient(135deg,#172c58,#4276a9)",
+    rating:4.9, featured:true,
+    description:"A mysterious map leads a young explorer beyond the edge of every known world.",
+    chapters:[
+      {title:"Chapter One: The Unmarked Map",text:`The map arrived on a rainy Tuesday, folded inside a letter with no name on it.
+
+Mira almost threw it away. The envelope was old, the paper smelled of dust, and the strange silver symbol on the front looked like a star falling through a dark sky.
+
+But the map was warm.
+
+When she unfolded it, tiny lights began to move across its surface. Rivers shimmered. Mountains rose like shadows. And in the centre, a little golden dot pulsed beside three words:
+
+FIND STARFALL BEFORE DAWN.
+
+Mira had never heard of Starfall. She had spent years exploring the hills outside her village, yet none of her maps showed a place by that name.
+
+Then the map changed.
+
+A thin silver line appeared, leading from her bedroom window toward the old forest. At its end, a new symbol flickered into existence: a door.
+
+From somewhere beyond the rain came a sound like distant bells.
+
+Mira packed a lantern, a notebook, and the compass her grandfather had given her. Before leaving, she noticed one final message written along the map's edge.
+
+Do not trust the stars that move.
+
+She stepped into the night, and the golden dot began to travel.`}
+    ]
+  },
+  {
+    id:"darkserver", title:"The Dark Server", author:"TaleVerse Library",
+    category:"Horror", emoji:"🌑", color:"linear-gradient(135deg,#111827,#374151)",
+    rating:4.8, featured:true,
+    description:"A silent game world, a strange message, and a server that should not exist.",
+    chapters:[
+      {title:"Chapter One: The World That Shouldn't Exist",text:`Arin never meant to join the server.
+
+One moment, the game was running normally. The next, the screen froze, flickered, and loaded into a world that felt completely wrong.
+
+The sky was dull grey. The land stretched flat and lifeless into the distance. There were no animals, no other players, and none of the familiar sounds Arin expected to hear.
+
+Then a message appeared in the chat.
+
+YOU ARE NOT ALONE.
+
+Arin stared at the words. No username appeared beside them.
+
+The screen flickered again.
+
+A tall figure stood at the edge of the field. Its face was dark and impossible to read. Arin turned the camera away for only a second.
+
+When he looked back, the figure was gone.
+
+He opened the server menu. There was no name, no description, and no button to leave.
+
+Then another message appeared.
+
+WELCOME BACK, ARIN.
+
+He had never played this server before.
+
+At least, he didn't think he had.`}
+    ]
+  },
+  {
+    id:"glasskingdom", title:"The Glass Kingdom", author:"TaleVerse Library",
+    category:"Fantasy", emoji:"🏰", color:"linear-gradient(135deg,#4c1d95,#d977b5)",
+    rating:4.7, featured:false,
+    description:"A forgotten princess discovers a kingdom that reflects the future instead of the past.",
+    chapters:[
+      {title:"Chapter One: The Shattered Door",text:`The first rule of the palace was simple: never look into the mirrors after sunset.
+
+Liora had obeyed that rule for seventeen years. She had heard the warnings from servants, guards, and even the old king himself.
+
+But on the night the palace bells rang thirteen times, she found a mirror standing open in a room that had been locked for generations.
+
+Its glass did not reflect her face.
+
+It showed a city made of crystal beneath a violet sky. Towers shone like frozen lightning, and people walked its silver streets wearing crowns of broken glass.
+
+At the centre stood a girl who looked exactly like Liora.
+
+The girl raised one hand and pressed it against the other side of the mirror.
+
+Words appeared across the glass.
+
+YOU HAVE SEVEN DAYS.
+
+Before Liora could ask what they meant, a crack raced across the mirror. Somewhere beyond it, the crystal city began to fall.
+
+And the girl who wore Liora's face whispered a name that no one in the palace had spoken for a hundred years: the name of the lost queen.`}
+    ]
+  },
+  {
+    id:"lastsignal", title:"The Last Signal", author:"TaleVerse Library",
+    category:"Sci-Fi", emoji:"🪐", color:"linear-gradient(135deg,#082f49,#0e7490)",
+    rating:4.9, featured:true,
+    description:"A distant signal leads a young space explorer to an impossible discovery.",
+    chapters:[
+      {title:"Chapter One: A Voice from Nowhere",text:`At 03:17 station time, the telescope heard a voice.
+
+It came from a patch of space where nothing should have been broadcasting. No stars. No planets. No known spacecraft.
+
+Just silence.
+
+Nineteen-year-old communications trainee Imani replayed the recording three times. The signal was faint, buried beneath static, but the pattern was unmistakable: a greeting repeated in a language she had never studied.
+
+Yet she understood it.
+
+WE ARE WAITING AT THE PLACE YOU LEFT US.
+
+Imani called the senior crew. They checked the equipment, then the archives, then the mission logs. Nothing explained the transmission.
+
+Until an old navigation file opened by itself.
+
+It displayed a star chart dated eighty years in the future. One location blinked red. Beside it was a photograph of a ship that had not yet been built.
+
+On its hull, in clear white letters, was Imani's own name.
+
+Then the signal came again.
+
+This time, the voice sounded frightened.`}
+    ]
+  },
+  {
+    id:"clockwork", title:"The Clockwork Detective", author:"TaleVerse Library",
+    category:"Mystery", emoji:"🕰️", color:"linear-gradient(135deg,#713f12,#d97706)",
+    rating:4.6, featured:false,
+    description:"Every clock in the city stops at the same minute. One young detective knows why.",
+    chapters:[
+      {title:"Chapter One: Eleven Fifty-Nine",text:`Every clock in Bellweather stopped at eleven fifty-nine.
+
+The clocks in the station, the bakery, the school, and the great tower above the town square all froze on the same minute. Even the little watch in Detective Rowan's pocket refused to move.
+
+At first, everyone blamed the storm.
+
+Then the letters arrived.
+
+One was left on the mayor's desk. Another appeared inside a locked museum. A third was delivered to Rowan's office by a child who insisted that nobody had handed it to him.
+
+Each letter contained the same sentence:
+
+TIME HAS BEEN STOLEN.
+
+Rowan examined the paper. It was warm, as if it had just come from a printer, but the ink was older than the oldest book in the town library.
+
+That evening, a clock began ticking in the abandoned railway station.
+
+It was not counting forward.
+
+It was counting backward.`}
+    ]
+  },
+  {
+    id:"wildfrontier", title:"Beyond the Wild Frontier", author:"TaleVerse Library",
+    category:"Adventure", emoji:"🌿", color:"linear-gradient(135deg,#14532d,#65a30d)",
+    rating:4.5, featured:false,
+    description:"Two friends cross an uncharted wilderness to uncover a lost civilisation.",
+    chapters:[
+      {title:"Chapter One: The Green Horizon",text:`The wilderness began where the railway ended.
+
+Beyond the last station lay a sea of green hills, deep rivers, and forests so old that their tallest trees vanished into the clouds.
+
+Tarin had dreamed of crossing it since childhood. His friend Jo had agreed to come along, though she trusted maps far more than dreams.
+
+Their guide gave them one warning before they departed.
+
+"If you hear bells in the forest, do not follow them."
+
+By the third morning, they had found footprints beside their camp. The prints were too large for a person and too neat for an animal.
+
+By the fourth, their compass pointed toward the ground.
+
+On the fifth morning, they reached a stone arch covered in writing. The symbols matched a drawing in Tarin's grandfather's journal, beside a note that read:
+
+THE LOST CITY IS REAL. BUT IT DOES NOT WANT TO BE FOUND.
+
+From beyond the arch came the clear sound of bells.`}
+    ]
+  },
+  {
+    id:"moonlibrary", title:"The Library of the Moon", author:"TaleVerse Library",
+    category:"Fantasy", emoji:"🌙", color:"linear-gradient(135deg,#312e81,#818cf8)",
+    rating:4.8, featured:false,
+    description:"A night librarian discovers books that contain memories from other worlds.",
+    chapters:[
+      {title:"Chapter One: The Book with No Title",text:`The moonlight entered the library even when every window was closed.
+
+Nessa had worked the night shift for six months, and she had learned not to question the strange things that happened after midnight. Books returned themselves to shelves. Ink changed colour. Sometimes the staircase led to a floor that did not exist during the day.
+
+But tonight, a book appeared on her desk with no title.
+
+Its pages were completely blank.
+
+When Nessa touched the first page, a memory filled her mind: a beach beneath two moons, a child laughing beside a silver ocean, and a city floating upside down among the clouds.
+
+She pulled her hand away.
+
+The memory vanished, but a sentence remained on the page.
+
+A LIBRARIAN IS NEEDED IN WORLD SEVEN.
+
+Beneath it, new words slowly appeared.
+
+PLEASE COME BEFORE WE FORGET YOU.`}
+    ]
+  },
+  {
+    id:"echo", title:"Echoes Beneath the Sea", author:"TaleVerse Library",
+    category:"Mystery", emoji:"🌊", color:"linear-gradient(135deg,#164e63,#0891b2)",
+    rating:4.6, featured:false,
+    description:"A strange underwater sound draws a research team to a secret beneath the ocean.",
+    chapters:[
+      {title:"Chapter One: The Sounding",text:`The sound came from three thousand metres below the ocean.
+
+It repeated every eleven minutes, always in groups of five pulses. The research team first assumed it was a geological event, but the pattern never changed.
+
+Then Dr. Sana Malik noticed something impossible.
+
+The pulses matched the rhythm of a human heartbeat.
+
+They lowered a listening device into the dark water and waited. On the screen, the signal appeared as five bright lines, followed by a string of numbers.
+
+Sana recognised the numbers from an old expedition report. They marked the location of a vessel that had vanished forty years earlier.
+
+The vessel had been found empty, its engines cold and its instruments still running.
+
+The last entry in its captain's journal contained only six words:
+
+WE HEARD SOMETHING ANSWER US.
+
+The device crackled.
+
+For the first time, the sound from the deep changed.
+
+It was no longer a pulse.
+
+It was a voice.`}
+    ]
+  }
+];
+
+let activeCategory="All";
+let currentStory=null;
+let fontSize=18;
+let toastTimer;
+
+const grid=document.getElementById("bookgrid");
+const searchInput=document.getElementById("search");
+const sortSelect=document.getElementById("sort");
+const reader=document.getElementById("reader");
+const readtext=document.getElementById("readtext");
+
+function getSaved(key,fallback){
+  try{
+    const value=localStorage.getItem(key);
+    return value===null?fallback:JSON.parse(value);
+  }catch(e){return fallback}
+}
+function save(key,value){
+  try{localStorage.setItem(key,JSON.stringify(value))}
+  catch(e){showToast("Browser storage is unavailable on this device.")}
+}
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
+}
+function getBookmarks(){return getSaved("taleverse-bookmarks",[])}
+function getHistory(){return getSaved("taleverse-history",{})}
+
+function renderBooks(){
+  let list=stories.filter(story=>{
+    const term=searchInput.value.trim().toLowerCase();
+    const matchesCategory=activeCategory==="All"||story.category===activeCategory;
+    const matchesSearch=!term||[
+      story.title,story.author,story.category,story.description
+    ].join(" ").toLowerCase().includes(term);
+    return matchesCategory&&matchesSearch;
+  });
+
+  if(sortSelect.value==="title")list.sort((a,b)=>a.title.localeCompare(b.title));
+  if(sortSelect.value==="rating")list.sort((a,b)=>b.rating-a.rating);
+  if(sortSelect.value==="featured")list.sort((a,b)=>Number(b.featured)-Number(a.featured));
+
+  document.getElementById("count").textContent=list.length+" stor"+(list.length===1?"y":"ies");
+
+  if(!list.length){
+    grid.innerHTML='<div class="empty"><div style="font-size:40px">🔎</div><h3>No stories found</h3><p>Try another search or category.</p></div>';
+    return;
+  }
+
+  grid.innerHTML=list.map(story=>{
+    const saved=getBookmarks().includes(story.id);
+    const progress=getHistory()[story.id];
+    return `
+      <article class="book">
+        <div class="cover" style="background:${story.color}"><span>${story.emoji}</span></div>
+        <div class="bookbody">
+          <span class="tag">${story.category}</span>
+          <h3>${escapeHTML(story.title)}</h3>
+          <p>${escapeHTML(story.description)}</p>
+          <div class="bookbottom">
+            <span class="muted" style="font-size:12px">★ ${story.rating.toFixed(1)} ${saved?" · ☆":""}</span>
+            <button class="smallbtn" data-open="${story.id}">${progress?"Continue":"Read story"}</button>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
+}
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
+}
+function setCategory(category){
+  activeCategory=category;
+  document.querySelectorAll(".chip").forEach(chip=>{
+    chip.classList.toggle("active",chip.dataset.category===category);
+  });
+  renderBooks();
+  document.getElementById("discover").scrollIntoView({behavior:"smooth"});
+}
+function openStory(id){
+  currentStory=stories.find(story=>story.id===id);
+  if(!currentStory)return;
+  document.getElementById("readerTitle").textContent=currentStory.title;
+  document.getElementById("readerCategory").textContent=currentStory.category;
+  document.getElementById("readerAuthor").textContent="By "+currentStory.author+" · "+currentStory.chapters.length+" chapter";
+  const saved=getHistory()[id]||0;
+  document.getElementById("readingStatus").textContent=saved?"Reading progress saved":"New story";
+  readtext.innerHTML=currentStory.chapters.map(chapter=>
+    "<h3>"+escapeHTML(chapter.title)+"</h3><p>"+escapeHTML(chapter.text)+"</p>"
+  ).join("");
+  fontSize=18;
+  readtext.style.fontSize=fontSize+"px";
+  updateBookmarkButton();
+  reader.classList.add("show");
+  document.body.style.overflow="hidden";
+  saveProgress();
+}
+function closeStory(){
+  reader.classList.remove("show");
+  document.body.style.overflow="";
+  currentStory=null;
+}
+function saveProgress(){
+  if(!currentStory)return;
+  const history=getHistory();
+  history[currentStory.id]=Math.min(readtext.scrollTop,readtext.scrollHeight);
+  save("taleverse-history",history);
+  document.getElementById("readingStatus").textContent="Progress saved on this device";
+}
+function updateBookmarkButton(){
+  const saved=currentStory&&getBookmarks().includes(currentStory.id);
+  document.getElementById("bookmarkBtn").textContent=saved?"★ Bookmarked":"☆ Bookmark";
+}
+document.getElementById("categories").addEventListener("click",event=>{
+  const chip=event.target.closest("[data-category]");
+  if(chip)setCategory(chip.dataset.category);
+});
+grid.addEventListener("click",event=>{
+  const button=event.target.closest("[data-open]");
+  if(button)openStory(button.dataset.open);
+});
+searchInput.addEventListener("input",renderBooks);
+sortSelect.addEventListener("change",renderBooks);
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  document.body.classList.toggle("dark");
+  const dark=document.body.classList.contains("dark");
+  document.getElementById("themeBtn").textContent=dark?"☀️":"🌙";
+  try{localStorage.setItem("taleverse-theme",dark?"dark":"light")}catch(e){}
+});
+document.getElementById("closeReader").addEventListener("click",closeStory);
+reader.addEventListener("click",event=>{if(event.target===reader)closeStory()});
+document.addEventListener("keydown",event=>{if(event.key==="Escape")closeStory()});
+document.getElementById("larger").addEventListener("click",()=>{
+  fontSize=Math.min(28,fontSize+2);readtext.style.fontSize=fontSize+"px";
+});
+document.getElementById("smaller").addEventListener("click",()=>{
+  fontSize=Math.max(14,fontSize-2);readtext.style.fontSize=fontSize+"px";
+});
+document.getElementById("bookmarkBtn").addEventListener("click",()=>{
+  if(!currentStory)return;
+  let saved=getBookmarks();
+  if(saved.includes(currentStory.id))saved=saved.filter(id=>id!==currentStory.id);
+  else saved.push(currentStory.id);
+  save("taleverse-bookmarks",saved);
+  updateBookmarkButton();
+  renderBooks();
+  showToast(saved.includes(currentStory.id)?"Story bookmarked!":"Bookmark removed.");
+});
+readtext.addEventListener("scroll",()=>{
+  if(currentStory)saveProgress();
+});
+try{
+  if(localStorage.getItem("taleverse-theme")==="dark"){
+    document.body.classList.add("dark");
+    document.getElementById("themeBtn").textContent="☀️";
+  }
+}catch(e){}
+document.getElementById("year").textContent=new Date().getFullYear();
+renderBooks();
+</script>
+</body>
+</html>
