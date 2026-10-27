@@ -1,0 +1,255 @@
+
+/* ========================================
+   TaleVerse — Style & Animation Upgrade
+   ======================================== */
+
+:root {
+  --tv-accent: #8065ed;
+  --tv-accent-light: #a995ff;
+  --tv-radius: 20px;
+}
+
+/* Smooth scrolling and selection */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+::selection {
+  background: var(--tv-accent-light);
+  color: white;
+}
+
+/* Gentle entrance animation */
+@keyframes tv-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tv-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(128, 101, 237, 0);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(128, 101, 237, 0.2);
+  }
+}
+
+/* Navigation */
+header {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: box-shadow 0.25s ease;
+}
+
+header:hover {
+  box-shadow: 0 5px 25px rgba(60, 40, 120, 0.07);
+}
+
+.logo {
+  transition: transform 0.25s ease;
+}
+
+.logo:hover {
+  transform: scale(1.035);
+}
+
+/* Hero section */
+.hero {
+  isolation: isolate;
+  animation: tv-fade-up 0.7s ease both;
+}
+
+.hero h1 {
+  letter-spacing: -1.8px;
+}
+
+.hero .primary {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero .primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Search controls */
+.searchrow input,
+.searchrow select {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.searchrow input:focus,
+.searchrow select:focus {
+  border-color: var(--tv-accent);
+  box-shadow: 0 0 0 4px rgba(128, 101, 237, 0.13);
+  outline: none;
+}
+
+/* Category chips */
+.chip {
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+}
+
+/* Story cards */
+.book {
+  animation: tv-fade-up 0.45s ease both;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.book:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 38px rgba(70, 48, 130, 0.13);
+}
+
+.cover {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cover span {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.35s ease;
+}
+
+.book:hover .cover span {
+  transform: scale(1.15) rotate(-4deg);
+}
+
+.book h3 {
+  transition: color 0.2s ease;
+}
+
+.book:hover h3 {
+  color: var(--tv-accent-light);
+}
+
+.smallbtn {
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.smallbtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 5px 14px rgba(128, 101, 237, 0.22);
+}
+
+/* Featured section */
+.feature {
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  border-color: var(--tv-accent-light);
+  box-shadow: var(--tv-shadow, 0 15px 35px rgba(70, 48, 130, 0.09));
+}
+
+.featureart {
+  overflow: hidden;
+  transition: filter 0.3s ease;
+}
+
+.feature:hover .featureart {
+  filter: saturate(1.15);
+}
+
+/* Reading popup */
+.modal.show .dialog {
+  animation: tv-fade-up 0.3s ease both;
+}
+
+.dialog {
+  border: 1px solid var(--tv-border, #e8e3f5);
+}
+
+.readtext {
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+}
+
+.readercontrols button {
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.readercontrols button:hover {
+  border-color: var(--tv-accent);
+}
+
+/* Bookmark button */
+#bookmarkBtn {
+  font-weight: 700;
+}
+
+/* Footer */
+footer .logo {
+  display: inline-block;
+}
+
+/* Accessible keyboard focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--tv-accent-light);
+  outline-offset: 3px;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  .hero h1 {
+    letter-spacing: -1px;
+  }
+
+  .book:hover {
+    transform: translateY(-3px);
+  }
+
+  .section {
+    margin-top: 34px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
