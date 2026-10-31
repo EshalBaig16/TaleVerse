@@ -215,7 +215,7 @@ It was no longer a pulse.
 
 It was a voice.`}]}
 ];
-let stories=[...starterStories],activeCategory="All",currentStory=null,fontSize=18,toastTimer,currentUser=null;
+let stories=[],activeCategory="All",currentStory=null,fontSize=18,toastTimer,currentUser=null;
 const grid=document.getElementById("bookgrid"),searchInput=document.getElementById("search"),sortSelect=document.getElementById("sort"),reader=document.getElementById("reader"),readtext=document.getElementById("readtext");
 function getSaved(key,fallback){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch(e){return fallback}}
 function save(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){showToast("Browser storage is unavailable on this device.")}}
@@ -229,7 +229,56 @@ function openStory(id){currentStory=stories.find(s=>String(s.id)===String(id));i
 function closeStory(){reader.classList.remove("show");document.body.style.overflow="";currentStory=null}
 function saveProgress(){if(!currentStory)return;const h=getHistory();h[currentStory.id]=reader.querySelector(".dialog").scrollTop;save("taleverse-history",h);document.getElementById("readingStatus").textContent="Progress saved on this device"}
 function updateBookmarkButton(){const yes=currentStory&&getBookmarks().includes(currentStory.id);document.getElementById("bookmarkBtn").textContent=yes?"★ Bookmarked":"☆ Bookmark"}
-async function loadOnlineBooks(){try{const {data:books,error}=await supabaseClient.from("books").select("id,title,slug,author,description,genre,cover_url,status,created_at").eq("status","published").order("created_at",{ascending:false});if(error)throw error;if(!books)return;const ids=books.map(b=>b.id);let chapterRows=[];if(ids.length){const result=await supabaseClient.from("chapters").select("id,book_id,title,content,chapter_order").in("book_id",ids).order("chapter_order",{ascending:true});if(result.error)throw result.error;chapterRows=result.data||[]}const online=books.map(b=>({id:b.id,slug:b.slug,title:b.title,author:b.author||"Unknown author",category:b.genre||"Other",emoji:"📖",color:colorFor(b.genre),rating:0,featured:false,description:b.description||"",cover_url:b.cover_url,chapters:chapterRows.filter(c=>c.book_id===b.id).map(c=>({title:c.title,text:c.content}))})).filter(b=>b.chapters.length);const onlineSlugs=new Set(online.map(b=>b.slug));const localIds=new Set(online.map(b=>String(b.id)));stories=[...starterStories.filter(s=>!localIds.has(String(s.id))&&!onlineSlugs.has("starter-"+s.id)),...online];renderBooks()}catch(error){console.error("TaleVerse load error:",error);showToast("Could not load online books. Showing the sample library.")}}
+async function loadOnlineBooks(){
+ try{
+  const {data:books,error}=await supabaseClient
+   .from("books")
+   .select("id,title,slug,author,description,genre,cover_url,status,created_at")
+   .eq("status","published")
+   .order("created_at",{ascending:false});
+
+  if(error) throw error;
+
+  const ids=(books||[]).map(b=>b.id);
+  let chapterRows=[];
+
+  if(ids.length){
+   const result=await supabaseClient
+    .from("chapters")
+    .select("id,book_id,title,content,chapter_order")
+    .in("book_id",ids)
+    .order("chapter_order",{ascending:true});
+
+   if(result.error) throw result.error;
+   chapterRows=result.data||[];
+  }
+
+  // Supabase is the source of truth: deleted books are not restored locally.
+  stories=(books||[]).map(b=>({
+   id:b.id,
+   slug:b.slug,
+   title:b.title,
+   author:b.author||"Unknown author",
+   category:b.genre||"Other",
+   emoji:"📖",
+   color:colorFor(b.genre),
+   rating:0,
+   featured:false,
+   description:b.description||"",
+   cover_url:b.cover_url,
+   chapters:chapterRows
+    .filter(c=>c.book_id===b.id)
+    .map(c=>({title:c.title,text:c.content}))
+  }));
+
+  renderBooks();
+ }catch(error){
+  console.error("TaleVerse load error:",error);
+  stories=[];
+  renderBooks();
+  showToast("Could not load online books. Please refresh and try again.");
+ }
+}=await supabaseClient.from("books").select("id,title,slug,author,description,genre,cover_url,status,created_at").eq("status","published").order("created_at",{ascending:false});if(error)throw error;if(!books)return;const ids=books.map(b=>b.id);let chapterRows=[];if(ids.length){const result=await supabaseClient.from("chapters").select("id,book_id,title,content,chapter_order").in("book_id",ids).order("chapter_order",{ascending:true});if(result.error)throw result.error;chapterRows=result.data||[]}const online=books.map(b=>({id:b.id,slug:b.slug,title:b.title,author:b.author||"Unknown author",category:b.genre||"Other",emoji:"📖",color:colorFor(b.genre),rating:0,featured:false,description:b.description||"",cover_url:b.cover_url,chapters:chapterRows.filter(c=>c.book_id===b.id).map(c=>({title:c.title,text:c.content}))})).filter(b=>b.chapters.length);const onlineSlugs=new Set(online.map(b=>b.slug));const localIds=new Set(online.map(b=>String(b.id)));stories=[...starterStories.filter(s=>!localIds.has(String(s.id))&&!onlineSlugs.has("starter-"+s.id)),...online];renderBooks()}catch(error){console.error("TaleVerse load error:",error);showToast("Could not load online books. Showing the sample library.")}}
 async function refreshAdminState(){const {data:{session}}=await supabaseClient.auth.getSession();currentUser=session?.user||null;const panel=document.getElementById("adminPanel");if(!currentUser){panel.classList.add("hidden");document.getElementById("adminBtn").textContent="Admin login";return}const {data:adminRow,error}=await supabaseClient.from("app_admins").select("user_id").eq("user_id",currentUser.id).maybeSingle();if(error||!adminRow){await supabaseClient.auth.signOut();currentUser=null;panel.classList.add("hidden");document.getElementById("adminBtn").textContent="Admin login";showToast("This account is not registered as a TaleVerse admin.");return}document.getElementById("adminEmail").textContent=currentUser.email||"";panel.classList.remove("hidden");document.getElementById("adminBtn").textContent="Admin panel";await loadAdminBooks()}
 let adminBooksCache=[];
 function htmlSafe(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
