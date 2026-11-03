@@ -215,7 +215,7 @@ It was no longer a pulse.
 
 It was a voice.`}]}
 ];
-let stories=[...starterStories],activeCategory="All",currentStory=null,fontSize=18,toastTimer,currentUser=null;
+let stories=[],activeCategory="All",currentStory=null,fontSize=18,toastTimer,currentUser=null;
 const grid=document.getElementById("bookgrid"),searchInput=document.getElementById("search"),sortSelect=document.getElementById("sort"),reader=document.getElementById("reader"),readtext=document.getElementById("readtext");
 function getSaved(key,fallback){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch(e){return fallback}}
 function save(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){showToast("Browser storage is unavailable on this device.")}}
@@ -229,7 +229,42 @@ function openStory(id){currentStory=stories.find(s=>String(s.id)===String(id));i
 function closeStory(){reader.classList.remove("show");document.body.style.overflow="";currentStory=null}
 function saveProgress(){if(!currentStory)return;const h=getHistory();h[currentStory.id]=reader.querySelector(".dialog").scrollTop;save("taleverse-history",h);document.getElementById("readingStatus").textContent="Progress saved on this device"}
 function updateBookmarkButton(){const yes=currentStory&&getBookmarks().includes(currentStory.id);document.getElementById("bookmarkBtn").textContent=yes?"★ Bookmarked":"☆ Bookmark"}
-async function loadOnlineBooks(){try{const {data:books,error}=await supabaseClient.from("books").select("id,title,slug,author,description,genre,cover_url,status,created_at").eq("status","published").order("created_at",{ascending:false});if(error)throw error;if(!books)return;const ids=books.map(b=>b.id);let chapterRows=[];if(ids.length){const result=await supabaseClient.from("chapters").select("id,book_id,title,content,chapter_order").in("book_id",ids).order("chapter_order",{ascending:true});if(result.error)throw result.error;chapterRows=result.data||[]}const online=books.map(b=>({id:b.id,slug:b.slug,title:b.title,author:b.author||"Unknown author",category:b.genre||"Other",emoji:"📖",color:colorFor(b.genre),rating:0,featured:false,description:b.description||"",cover_url:b.cover_url,chapters:chapterRows.filter(c=>c.book_id===b.id).map(c=>({title:c.title,text:c.content}))})).filter(b=>b.chapters.length);const onlineSlugs=new Set(online.map(b=>b.slug));const localIds=new Set(online.map(b=>String(b.id)));stories=[...starterStories.filter(s=>!localIds.has(String(s.id))&&!onlineSlugs.has("starter-"+s.id)),...online];renderBooks()}catch(error){console.error("TaleVerse load error:",error);showToast("Could not load online books. Showing the sample library.")}}
+async function loadOnlineBooks(){
+ try{
+  const {data:books,error}=await supabaseClient
+   .from("books")
+   .select("id,title,slug,author,description,genre,cover_url,status,created_at")
+   .eq("status","published")
+   .order("created_at",{ascending:false});
+  if(error) throw error;
+
+  const ids=(books||[]).map(b=>b.id);
+  let chapterRows=[];
+  if(ids.length){
+   const result=await supabaseClient
+    .from("chapters")
+    .select("id,book_id,title,content,chapter_order")
+    .in("book_id",ids)
+    .order("chapter_order",{ascending:true});
+   if(result.error) throw result.error;
+   chapterRows=result.data||[];
+  }
+
+  // Supabase is the source of truth; deleted starter books stay deleted.
+  stories=(books||[]).map(b=>({
+   id:b.id,slug:b.slug,title:b.title,author:b.author||"Unknown author",
+   category:b.genre||"Other",emoji:"📖",color:colorFor(b.genre),
+   rating:0,featured:false,description:b.description||"",cover_url:b.cover_url,
+   chapters:chapterRows.filter(c=>c.book_id===b.id).map(c=>({title:c.title,text:c.content}))
+  }));
+  renderBooks();
+ }catch(error){
+  console.error("TaleVerse load error:",error);
+  stories=[];
+  renderBooks();
+  showToast("Could not load online books. Please refresh and try again.");
+ }
+}
 async function refreshAdminState(){const {data:{session}}=await supabaseClient.auth.getSession();currentUser=session?.user||null;const panel=document.getElementById("adminPanel");if(!currentUser){panel.classList.add("hidden");document.getElementById("adminBtn").textContent="Admin login";return}const {data:adminRow,error}=await supabaseClient.from("app_admins").select("user_id").eq("user_id",currentUser.id).maybeSingle();if(error||!adminRow){await supabaseClient.auth.signOut();currentUser=null;panel.classList.add("hidden");document.getElementById("adminBtn").textContent="Admin login";showToast("This account is not registered as a TaleVerse admin.");return}document.getElementById("adminEmail").textContent=currentUser.email||"";panel.classList.remove("hidden");document.getElementById("adminBtn").textContent="Admin panel";await loadAdminBooks()}
 let adminBooksCache=[];
 function htmlSafe(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
@@ -259,7 +294,50 @@ async function importStarterStories(){
 }
 async function loadAdminBooks(){if(!currentUser)return;const box=document.getElementById("adminBookList"),select=document.getElementById("manageBookSelect");box.innerHTML='<p class="muted">Loading books…</p>';const {data,error}=await supabaseClient.from("books").select("id,title,author,genre,status,created_at").order("created_at",{ascending:false});if(error){box.textContent="Could not load books: "+error.message;return}adminBooksCache=data||[];if(!adminBooksCache.length){box.innerHTML='<p class="muted">No online books yet. Publish your first book above.</p>';select.innerHTML='<option value="">No books available</option>';document.getElementById("chapterManager").innerHTML='<p class="muted">Publish a book first.</p>';return}box.innerHTML=adminBooksCache.map(b=>`<div class="adminitem"><div><strong>${htmlSafe(b.title)}</strong><div class="muted tiny">${htmlSafe(b.author||"Unknown author")} · ${htmlSafe(b.genre||"Other")} · ${htmlSafe(b.status)}</div></div><div class="actions"><button class="secondary smallbtn" data-manage-book="${b.id}">Manage chapters</button><button class="secondary smallbtn" data-delete-book="${b.id}">Delete book</button></div></div>`).join("");const old=select.value;select.innerHTML='<option value="">Choose a published book</option>'+adminBooksCache.map(b=>`<option value="${b.id}">${htmlSafe(b.title)}</option>`).join("");if(old&&adminBooksCache.some(b=>b.id===old)){select.value=old;await loadAdminChapters(old)}}
 async function loadAdminChapters(bookId){const box=document.getElementById("chapterManager");if(!bookId){box.innerHTML='<p class="muted">Choose a book to manage its chapters.</p>';return}box.innerHTML='<p class="muted">Loading chapters…</p>';const {data,error}=await supabaseClient.from("chapters").select("id,title,content,chapter_order").eq("book_id",bookId).order("chapter_order",{ascending:true});if(error){box.textContent="Could not load chapters: "+error.message;return}if(!data?.length){box.innerHTML='<p class="muted">This book has no chapters yet. Add one below.</p>';return}box.innerHTML=data.map((c,i)=>`<div class="chapteredit"><strong>Chapter ${i+1}</strong><label>Chapter title</label><input id="chapter-title-${c.id}" value="${htmlSafe(c.title)}"><label>Chapter content</label><textarea id="chapter-content-${c.id}">${htmlSafe(c.content)}</textarea><div class="actions"><button class="primary smallbtn" data-save-chapter="${c.id}">Save chapter</button><button class="secondary smallbtn" data-delete-chapter="${c.id}">Delete chapter</button></div></div>`).join("")}
-async function deleteOnlineBook(id){const book=adminBooksCache.find(b=>b.id===id);if(!book||!confirm(`Delete “${book.title}” and all its chapters? This cannot be undone.`))return;const {error:chapterError}=await supabaseClient.from("chapters").delete().eq("book_id",id);if(chapterError){showToast("Could not delete chapters: "+chapterError.message);return}const {error}=await supabaseClient.from("books").delete().eq("id",id);if(error){showToast("Chapters were deleted, but the book could not be deleted: "+error.message);return}document.getElementById("manageBookSelect").value="";await loadAdminBooks();await loadOnlineBooks();showToast("Book and its chapters deleted.")}
+async function deleteOnlineBook(id){
+ const book=adminBooksCache.find(b=>b.id===id);
+ if(!book||!confirm(`Delete “${book.title}” and all its chapters? This cannot be undone.`))return;
+
+ const deleteButton=document.querySelector(`[data-delete-book="${id}"]`);
+ if(deleteButton){deleteButton.disabled=true;deleteButton.textContent="Deleting…";}
+
+ try{
+  const {error:chapterError}=await supabaseClient
+   .from("chapters")
+   .delete()
+   .eq("book_id",id);
+  if(chapterError) throw new Error("Could not delete chapters: "+chapterError.message);
+
+  const {data:deletedBooks,error:bookError}=await supabaseClient
+   .from("books")
+   .delete()
+   .eq("id",id)
+   .select("id");
+
+  if(bookError) throw new Error("Could not delete the book: "+bookError.message);
+
+  if(!deletedBooks||deletedBooks.length===0){
+   throw new Error("Supabase did not delete this book. Its DELETE policy or is_admin() check may be blocking the request.");
+  }
+
+  stories=stories.filter(s=>String(s.id)!==String(id));
+  const history=getHistory();
+  delete history[id];
+  save("taleverse-history",history);
+  save("taleverse-bookmarks",getBookmarks().filter(bookmark=>String(bookmark)!==String(id)));
+
+  document.getElementById("manageBookSelect").value="";
+  document.getElementById("chapterManager").innerHTML='<p class="muted">Choose a book to manage its chapters.</p>';
+  await loadAdminBooks();
+  await loadOnlineBooks();
+  showToast("Book deleted successfully.");
+ }catch(error){
+  console.error("TaleVerse delete error:",error);
+  await loadAdminBooks();
+  await loadOnlineBooks();
+  showToast(error.message);
+ }
+}
 document.getElementById("importStarterStoriesBtn").addEventListener("click",importStarterStories);
 document.getElementById("adminBookList").addEventListener("click",async e=>{const manage=e.target.closest("[data-manage-book]"),del=e.target.closest("[data-delete-book]");if(manage){const id=manage.dataset.manageBook;document.getElementById("manageBookSelect").value=id;await loadAdminChapters(id);document.getElementById("chapterManager").scrollIntoView({behavior:"smooth",block:"start"})}if(del)await deleteOnlineBook(del.dataset.deleteBook)});
 document.getElementById("manageBookSelect").addEventListener("change",e=>loadAdminChapters(e.target.value));
