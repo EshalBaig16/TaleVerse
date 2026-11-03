@@ -34,6 +34,14 @@ main{max-width:1200px;margin:auto;padding:25px 22px 65px}.hero{border-radius:28p
 .daycell.done{border-color:var(--primary);background:#b5121b18}
 .daycell strong{display:block;font-size:17px;margin-bottom:4px}
 @media(max-width:600px){.tracker-stats{grid-template-columns:1fr 1fr}.tracker-stat:last-child{grid-column:1/-1}.tracker{padding:16px}}
+.achievement-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.achievement{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;min-height:138px}
+.achievement .medal{font-size:34px;filter:grayscale(1);opacity:.45}
+.achievement.earned{border-color:var(--primary);background:#b5121b10}
+.achievement.earned .medal{filter:none;opacity:1}
+.achievement strong{display:block;margin:7px 0 4px;font-size:13px}
+.achievement small{color:var(--muted);font-size:11px;line-height:1.4}
+@media(max-width:700px){.achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .hidden{display:none!important}
 @media(max-width:900px){.bookgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.nav{padding:13px;gap:10px}.logo{font-size:21px}.navlinks{display:none}main{padding:16px 13px 45px}.hero{padding:35px 22px}.bookgrid{gap:12px}.cover{height:140px;font-size:50px}.bookbody{padding:12px}.feature{grid-template-columns:1fr;padding:16px}.adminform{grid-template-columns:1fr}.adminform textarea,.adminform .wide{grid-column:auto}}
 </style>
@@ -61,6 +69,13 @@ main{max-width:1200px;margin:auto;padding:25px 22px 65px}.hero{border-radius:28p
   <div class="weekgrid" id="readingWeek"></div>
  </div>
  <p class="muted" style="font-size:12px;margin-top:10px">Reading goals and streaks are saved on this device and browser. They are not synced between devices yet.</p>
+</section>
+<section class="section" id="achievements">
+ <div class="sectionhead"><h2>🏆 Your achievements</h2><span class="muted">Little milestones, big reading adventures</span></div>
+ <div class="tracker">
+  <p class="muted" style="margin-top:0">Earn badges as you read and complete stories. Your achievements are saved on this device.</p>
+  <div class="achievement-grid" id="achievementGrid"></div>
+ </div>
 </section>
 <section class="section hidden" id="adminPanel"><div class="sectionhead"><h2>Admin publishing</h2><button class="secondary" id="logoutBtn">Log out</button></div><p class="muted">Signed in as <span id="adminEmail"></span>. Only an account listed in TaleVerse's app_admins table can publish.</p><div class="adminpanel"><h3>Publish a book</h3><form id="publishForm" class="adminform"><input id="bookTitle" placeholder="Book title" required><input id="bookAuthor" placeholder="Author" required><select id="bookGenre" required><option value="">Choose genre</option><option>Adventure</option><option>Fantasy</option><option>Horror</option><option>Mystery</option><option>Sci-Fi</option><option>Other</option></select><input id="bookSlug" placeholder="URL slug (optional)"><textarea id="bookDescription" class="wide" placeholder="Book description" required></textarea><input id="chapterTitle" class="wide" placeholder="First chapter title" required><textarea id="chapterContent" class="wide" placeholder="First chapter content" required></textarea><button class="primary wide" type="submit">Publish book</button></form></div><div class="adminpanel"><h3>Move built-in stories to Supabase</h3><p class="muted">Import the original TaleVerse sample stories into your online library so you can manage them here. Existing imported stories will be skipped.</p><button class="primary" id="importStarterStoriesBtn" type="button">Import original stories</button><p class="muted" id="importStarterStatus" aria-live="polite"></p></div><div class="adminpanel"><h3>Manage published books</h3><p class="muted">Edit chapters, add new chapters, or remove a book and its chapters.</p><div id="adminBookList"><p class="muted">Loading your books…</p></div></div><div class="adminpanel"><h3>Manage chapters</h3><label for="manageBookSelect">Choose a book</label><select id="manageBookSelect" class="wide" style="width:100%;padding:11px;margin:10px 0;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text)"><option value="">Choose a published book</option></select><div id="chapterManager"><p class="muted">Choose a book to manage its chapters.</p></div><form id="addChapterForm" class="adminform" style="margin-top:16px"><h4 class="wide">Add a chapter</h4><input id="newChapterTitle" class="wide" placeholder="New chapter title" required><textarea id="newChapterContent" class="wide" placeholder="Write the chapter here…" required></textarea><button class="primary wide" type="submit">Add chapter</button></form></div></section>
 </main>
@@ -271,7 +286,21 @@ function renderReadingTracker(){
  const week=document.getElementById("readingWeek"),labels=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],cells=[];
  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const key=localDateKey(d),mins=Math.floor((days[key]||0)/60);cells.push(`<div class="daycell ${mins>0?"done":""}"><div class="weekday">${labels[d.getDay()]}</div><strong>${mins>0?"✓":"·"}</strong>${mins}m</div>`)}
  week.innerHTML=cells.join("");
+ renderAchievements();
 }
+function getCompletedBooks(){return getSaved("taleverse-completed-books",[])}
+function renderAchievements(){
+ const days=getReadingData(),totalSeconds=Object.values(days).reduce((sum,value)=>sum+Number(value||0),0),completed=getCompletedBooks();
+ const items=[
+  {icon:"📖",name:"First Steps",desc:"Read for at least 1 minute",earned:totalSeconds>=60},
+  {icon:"🔥",name:"Week of Reading",desc:"Build a 7-day reading streak",earned:getStreak(days)>=7},
+  {icon:"⏳",name:"100 Minutes",desc:"Spend 100 minutes reading",earned:totalSeconds>=6000},
+  {icon:"🏅",name:"Story Finisher",desc:"Complete your first book",earned:completed.length>=1},
+  {icon:"👑",name:"Book Collector",desc:"Complete 5 different books",earned:completed.length>=5}
+ ];
+ document.getElementById("achievementGrid").innerHTML=items.map(item=>`<div class="achievement ${item.earned?"earned":""}"><div class="medal">${item.icon}</div><strong>${item.name}</strong><small>${item.earned?"Unlocked!":item.desc}</small></div>`).join("");
+}
+function markCurrentBookComplete(){if(!currentStory)return;const completed=getCompletedBooks();if(!completed.includes(String(currentStory.id))){completed.push(String(currentStory.id));save("taleverse-completed-books",completed);renderAchievements();showToast("🏆 Story completed! Achievement progress updated.")}}
 function addReadingTime(seconds){if(seconds<=0)return;const days=getReadingData(),key=localDateKey();days[key]=Number(days[key]||0)+seconds;save("taleverse-reading-days",days);renderReadingTracker()}
 let readingTick=null,lastReadingTick=0;
 function startReadingTimer(){if(readingTick)clearInterval(readingTick);lastReadingTick=Date.now();readingTick=setInterval(()=>{if(!currentStory||document.hidden)return;const now=Date.now(),elapsed=Math.min(30,Math.floor((now-lastReadingTick)/1000));lastReadingTick=now;if(elapsed>0)addReadingTime(elapsed)},15000)}
@@ -408,7 +437,7 @@ document.addEventListener("fullscreenchange",()=>{document.getElementById("fulls
 reader.addEventListener("click",e=>{if(e.target===reader)closeStory()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeStory()});
 document.getElementById("larger").addEventListener("click",()=>{fontSize=Math.min(28,fontSize+2);readtext.style.fontSize=fontSize+"px"});document.getElementById("smaller").addEventListener("click",()=>{fontSize=Math.max(14,fontSize-2);readtext.style.fontSize=fontSize+"px"});
 document.getElementById("bookmarkBtn").addEventListener("click",()=>{if(!currentStory)return;let saved=getBookmarks();if(saved.includes(currentStory.id))saved=saved.filter(id=>id!==currentStory.id);else saved.push(currentStory.id);save("taleverse-bookmarks",saved);updateBookmarkButton();renderBooks();showToast(saved.includes(currentStory.id)?"Story bookmarked!":"Bookmark removed.")});
-reader.querySelector(".dialog").addEventListener("scroll",()=>{if(currentStory)saveProgress()});
+reader.querySelector(".dialog").addEventListener("scroll",()=>{if(currentStory){saveProgress();const box=reader.querySelector(".dialog");if(box.scrollTop+box.clientHeight>=box.scrollHeight-80)markCurrentBookComplete()}});
 document.getElementById("adminBtn").addEventListener("click",async()=>{if(currentUser){document.getElementById("adminPanel").scrollIntoView({behavior:"smooth"});return}document.getElementById("loginModal").classList.add("show")});
 document.getElementById("closeLogin").addEventListener("click",()=>document.getElementById("loginModal").classList.remove("show"));
 document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showToast("Login failed: "+error.message);return}document.getElementById("loginModal").classList.remove("show");await refreshAdminState();if(currentUser){showToast("Admin login successful.");document.getElementById("adminPanel").scrollIntoView({behavior:"smooth"})}});
