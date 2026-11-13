@@ -90,12 +90,9 @@ main{max-width:1200px;margin:auto;padding:25px 22px 65px}.hero{border-radius:28p
 .community-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--bg);flex-wrap:wrap}
 .community-item img,.community-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#333;display:grid;place-items:center;font-size:25px}
 .community-item .community-actions{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
-.avatar-maker{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin:12px 0}
-.avatar-preview{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;font-size:58px;border:3px solid var(--primary);background:#f1d6bd}
-.avatar-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.avatar-options button{border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:9px;color:var(--text)}
+.avatar-maker{display:grid;grid-template-columns:190px minmax(0,1fr);gap:16px;align-items:start;margin:12px 0}.avatar-preview{width:190px;height:230px;border-radius:18px;overflow:hidden;display:grid;place-items:center;border:2px solid var(--primary);background:#f1d6bd;padding:0}.avatar-preview svg{width:100%;height:100%;display:block}.avatar-controls{min-width:0}.avatar-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.avatar-control-grid label{font-size:12px;color:var(--muted);display:grid;gap:4px}.avatar-control-grid select{width:100%;min-width:0;padding:8px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text)}.avatar-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.avatar-options button{border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:9px;color:var(--text)}.avatar-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.avatar-action-row button{flex:1}
 @media(max-width:760px){.dashboard-mode #readerDashboard{grid-template-columns:1fr;gap:12px}#tvSidebar{position:static;flex-direction:row;overflow-x:auto;white-space:nowrap}#tvSidebar .side-label{display:none}#tvSidebar button{flex:0 0 auto;padding:10px}.learn-row .book{flex-basis:150px}.learn-row .cover{height:165px}}
-@media(max-width:460px){.avatar-maker{grid-template-columns:1fr}.avatar-options{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.avatar-maker{grid-template-columns:1fr}.avatar-preview{margin:0 auto;width:180px;height:218px}.avatar-control-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.avatar-options{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 </style>
 </head>
@@ -186,9 +183,22 @@ main{max-width:1200px;margin:auto;padding:25px 22px 65px}.hero{border-radius:28p
 </section></div><section id="chapterReadPage" class="hidden"><div class="chapter-page-top"><button class="secondary" id="backToChapters" type="button">← All chapters</button><span class="muted" id="chapterPosition"></span></div><div class="readercontrols chapter-font-controls"><button id="smaller" type="button">A−</button><button id="larger" type="button">A+</button></div><div class="readtext" id="readtext"></div><div class="chapter-navigation"><button class="secondary" id="previousChapter" type="button">← Previous chapter</button><button class="primary" id="nextChapter" type="button">Next chapter →</button></div></section>
 <p class="muted" style="font-size:12px;margin-top:25px">Your reading progress syncs to your account when you are signed in.</p></div></div>
 <div class="modal" id="readerAccountModal" role="dialog" aria-modal="true"><div class="dialog"><div class="dialogtop"><h2>Reader account</h2><button class="iconbtn" id="closeReaderAccount">✕</button></div><p class="muted">Create a free account or sign in to rate books and write reviews.</p><form id="readerAuthForm" class="adminform"><input id="readerName" placeholder="Display name (for sign up)"><input id="readerEmail" type="email" placeholder="Email address" required><input id="readerPassword" type="password" placeholder="Password (at least 6 characters)" minlength="6" required><button class="primary wide" type="submit" id="readerAuthSubmit">Create free account</button><button class="secondary wide" type="button" id="readerAuthSwitch">Already have an account? Sign in</button></form><p class="muted" id="readerAuthStatus" aria-live="polite"></p><section class="reviewbox" id="profileEditorBox"><h3>👤 My public profile</h3><p class="muted">Choose what other TaleVerse readers can see. Your email, favourites and reading history are never shown here.</p><form id="profileForm" class="profileform"><label for="profileUsername">Public username</label><input id="profileUsername" maxlength="24" pattern="[A-Za-z0-9_ ]{3,24}" placeholder="e.g. StoryExplorer" required><label for="profileBio">Bio</label><textarea id="profileBio" maxlength="240" placeholder="A little about your reading interests..."></textarea><label for="profileAvatarFile">Profile picture</label><input id="profileAvatarFile" type="file" accept="image/*"><img id="profileAvatarPreview" class="profileavatar" alt="Profile picture preview">
-<label for="avatarEmoji">Or create an avatar</label>
-<div class="avatar-maker"><div id="avatarMakerPreview" class="avatar-preview" aria-label="Avatar preview">📚</div><div><select id="avatarEmoji" aria-label="Choose avatar"><option>📚</option><option>🦊</option><option>🐱</option><option>🐼</option><option>🐻</option><option>🐰</option><option>🦉</option><option>🐉</option><option>🌙</option><option>⭐</option><option>🧙</option><option>🧝</option></select><div class="avatar-options"><button type="button" data-avatar-bg="#f1d6bd">Warm</button><button type="button" data-avatar-bg="#d8e8f5">Sky</button><button type="button" data-avatar-bg="#eadcf5">Lilac</button><button type="button" data-avatar-bg="#d8eadb">Mint</button><button type="button" data-avatar-bg="#f4d9dc">Rose</button><button type="button" data-avatar-bg="#333333">Dark</button></div></div></div>
-<button class="secondary" id="useCreatedAvatar" type="button">Use this avatar</button>
+<label>Create your own character</label>
+<div class="avatar-maker avatar-maker-pro"><div id="avatarMakerPreview" class="avatar-preview" aria-label="Full-body human avatar preview"></div><div class="avatar-controls">
+<div class="avatar-control-grid">
+<label>Skin tone<select id="avSkin"><option value="#f6d7bd">Light</option><option value="#e8b995">Peach</option><option value="#c98762">Tan</option><option value="#985d43">Brown</option><option value="#633b2e">Deep</option></select></label>
+<label>Face<select id="avFace"><option value="smile">Smile</option><option value="calm">Calm</option><option value="happy">Happy</option></select></label>
+<label>Hair style<select id="avHair"><option value="long">Long</option><option value="short">Short</option><option value="curly">Curly</option><option value="bun">Bun</option><option value="hijab">Headscarf</option></select></label>
+<label>Hair colour<select id="avHairColor"><option value="#2b1b16">Black</option><option value="#593522">Brown</option><option value="#b87935">Golden</option><option value="#9b3540">Auburn</option><option value="#292b45">Midnight</option><option value="#777777">Silver</option></select></label>
+<label>Eyes<select id="avEyes"><option value="#33231e">Brown</option><option value="#315d78">Blue</option><option value="#47704c">Green</option><option value="#222222">Dark</option></select></label>
+<label>Full outfit<select id="avOutfit"><option value="hoodie">Hoodie + trousers</option><option value="jacket">Jacket + trousers</option><option value="sweater">Sweater + trousers</option><option value="dress">Long dress</option><option value="uniform">Smart outfit</option></select></label>
+<label>Outfit colour<select id="avClothes"><option value="#b5121b">TaleVerse red</option><option value="#20232b">Charcoal</option><option value="#315b78">Ocean blue</option><option value="#55765a">Forest green</option><option value="#7b5b83">Plum</option><option value="#d0a65a">Gold</option><option value="#eeeeea">Ivory</option></select></label>
+<label>Shoes<select id="avShoes"><option value="#292929">Black</option><option value="#7a4932">Brown</option><option value="#e8e5df">White</option><option value="#b5121b">Red</option></select></label>
+<label>Accessory<select id="avAccessory"><option value="none">None</option><option value="glasses">Glasses</option><option value="cap">Cap</option><option value="bow">Hair bow</option></select></label>
+</div>
+<div class="avatar-options"><button type="button" data-avatar-bg="#f1d6bd">Warm</button><button type="button" data-avatar-bg="#d8e8f5">Sky</button><button type="button" data-avatar-bg="#e8e2d8">Sand</button><button type="button" data-avatar-bg="#d8eadb">Mint</button><button type="button" data-avatar-bg="#f4d9dc">Rose</button><button type="button" data-avatar-bg="#333333">Dark</button></div>
+<div class="avatar-action-row"><button class="secondary" id="randomAvatar" type="button">🎲 Randomize</button><button class="primary" id="useCreatedAvatar" type="button">Use this avatar</button></div>
+</div></div>
 <button class="primary" type="submit">Save public profile</button><button class="secondary" id="viewMyProfileBtn" type="button">View my public profile</button><div><label for="findProfileUsername">Find another reader by username</label><input id="findProfileUsername" maxlength="24" placeholder="Enter their username"><button class="secondary" id="findPublicProfileBtn" type="button" style="margin-top:8px">View reader profile</button></div><p class="muted" id="profileStatus" aria-live="polite"></p></form></section><section class="reviewbox"><h3>📚 My Bookshelf</h3><p class="muted" id="shelfHint">Sign in to keep your favourite books saved to your account.</p><button class="secondary" id="openShelfBtn" type="button">View my bookshelf</button><div id="myShelfList" class="reviewlist" style="margin-top:12px"></div></section><section class="reviewbox"><h3>🕒 Reading history</h3><p class="muted" id="historyHint">Sign in to sync your reading history across devices.</p><button class="secondary" id="openHistoryBtn" type="button">View reading history</button><div id="readingHistoryList" class="reviewlist" style="margin-top:12px"></div></section><button class="secondary hidden" id="readerSignOutBtn" type="button">Sign out</button></div></div><div class="modal" id="publicProfileModal" role="dialog" aria-modal="true"><div class="dialog"><div class="dialogtop"><h2>Reader profile</h2><button class="iconbtn" id="closePublicProfile">✕</button></div><div id="publicProfileContent"><p class="muted">Loading profile…</p></div></div></div>
 <div class="modal" id="loginModal" role="dialog" aria-modal="true"><div class="dialog"><div class="dialogtop"><h2>Admin login</h2><button class="iconbtn" id="closeLogin">✕</button></div><p class="muted">Sign in with the admin account you created in Supabase Authentication.</p><form id="loginForm" class="adminform"><input id="loginEmail" type="email" placeholder="Email" required><input id="loginPassword" type="password" placeholder="Password" required><button class="primary wide" type="submit">Sign in</button></form></div></div>
 <div class="toast" id="toast" role="status"></div>
@@ -489,269 +499,4 @@ else if(page==="stats"){title="Reading Statistics";const done=getCompletedBooks(
 else if(["continue","recent","recommended","explore"].includes(page)){title=({continue:"Continue Reading",recent:"Recently Added",recommended:"Recommended Books",explore:"Explore Books"})[page];let list=stories.slice();if(page==="continue"){const h=getHistory();list=list.filter(b=>h[b.id]>0)}else if(page==="recent")list=list.slice().reverse();else if(page==="recommended")list=list.filter(b=>b.featured||["Fantasy","Adventure","Mystery"].includes(b.category)).slice(0,30);if(page==="explore"){content.innerHTML=`<div class="explore-filters" style="display:flex;gap:12px;flex-wrap:wrap;margin:0 0 20px"><input id="exploreSearch" type="search" placeholder="Search books, authors or keywords..." aria-label="Search Explore Books" oninput="renderExploreBooks()" style="flex:1;min-width:190px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text)"><select id="exploreGenre" aria-label="Filter by genre" onchange="renderExploreBooks()" style="min-width:170px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text)"><option value="All">All genres</option>${[...new Set(stories.map(b=>String(b.category||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b)).map(g=>`<option value="${dashEsc(g)}">${dashEsc(g)}</option>`).join("")}</select></div><p class="muted" id="exploreResultCount" style="margin:0 0 14px">${list.length} books</p><div class="dash-list" id="exploreBookResults"></div>`;renderExploreBooks()}else{content.innerHTML=list.length?`<div class="dash-list">${list.map(dashBookCard).join("")}</div>`:'<p class="muted">No books to show yet. Explore TaleVerse again soon!</p>'}}
 else if(page==="bookshelf"||page==="favourites"){title=page==="bookshelf"?"My Bookshelf":"My Favourites";content.innerHTML='<p class="muted">Loading your private bookshelf…</p>';loadMyBookshelf().then(()=>{const list=document.getElementById("myShelfList");content.innerHTML=list?.innerHTML||'<p class="muted">Your bookshelf is empty.</p>'})}
 else if(page==="history"){title="Reading History";content.innerHTML='<p class="muted">Loading your reading history…</p>';loadReadingHistory().then(()=>{const list=document.getElementById("readingHistoryList");content.innerHTML=list?.innerHTML||'<p class="muted">No reading history yet.</p>'})}
-else if(page==="friends"){title="Friends";content.innerHTML=`<div class="community-panel"><h3>Find readers</h3><p class="muted">Search for a TaleVerse reader by their public username and send a friend request.</p><input id="friendSearchName" maxlength="24" placeholder="Enter a username"><button class="primary" id="friendSearchBtn" type="button">Find reader</button><div id="friendSearchResult" class="community-list"></div></div><div class="community-panel"><h3>Friend requests</h3><div id="friendRequestsList" class="community-list">Loading requests…</div></div><div class="community-panel"><h3>My friends</h3><div id="myFriendsList" class="community-list">Loading friends…</div></div><div class="community-panel"><h3>Books shared with me</h3><div id="sharedBooksList" class="community-list">Loading shared books…</div></div>`;loadFriendsPage()}
-else if(page==="admin"){title="Admin Panel";if(!isAdmin){content.innerHTML='<p class="muted">Admin access is required.</p>'}else{const panel=document.getElementById("adminPanel");panel.classList.remove("hidden");content.appendChild(panel);loadAdminBooks()}}
-else{title="TaleVerse";content.innerHTML='<p class="muted">Choose a section from your Dashboard.</p>'}
-document.getElementById("dashPageTitle").textContent=title;window.scrollTo(0,0)}
-function renderLearnFeed(){const box=document.getElementById("learnShelves");if(!box)return;const shelves=[];const recent=stories.slice().sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));shelves.push(["New Arrivals",recent]);const genres=[...new Set(stories.map(b=>String(b.category||"Other").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));genres.forEach(g=>shelves.push([g,stories.filter(b=>String(b.category||"Other")===g)]));const picked=stories.filter(b=>b.featured||Number(b.rating||0)>=4.5);const recommended=picked.length?picked:recent.slice(0,Math.min(6,recent.length));shelves.push(["Recommended for You",recommended]);box.innerHTML=shelves.filter(x=>x[1].length).map(([title,books])=>`<section class="learn-shelf"><div class="learn-heading"><h2>${dashEsc(title)}</h2><span class="muted">${books.length} book${books.length===1?"":"s"}</span></div><div class="learn-row">${books.map(dashBookCard).join("")}</div></section>`).join("")||'<div class="learn-empty">No books have been published yet. New stories will appear here.</div>'}
-function renderReaderDashboard(){if(!readerUser){showReaderAuthPage();return}restoreProfileEditor();document.body.classList.remove("auth-page-mode");document.body.classList.add("dashboard-mode");document.getElementById("readerAuthPage").classList.add("hidden");document.getElementById("readerDashboard").classList.remove("hidden");document.getElementById("dashboardSubpage").classList.add("hidden");if(location.hash.startsWith("#dashboard/"))history.replaceState({dashPage:null},"",location.pathname+location.search+"#dashboard");const name=readerUser.user_metadata?.display_name||readerUser.email?.split("@")[0]||"Reader";document.getElementById("learnGreeting").textContent="Welcome back, "+name+"!";document.getElementById("learnAvatar").src=document.getElementById("profileAvatarPreview")?.src||"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23333'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='55' fill='white'>👤</text></svg>";document.getElementById("tvAdminLink").classList.toggle("hidden",!isAdmin);renderLearnFeed();window.scrollTo(0,0)}
-
-function renderBooks(){let list=stories.filter(s=>{const term=searchInput.value.trim().toLowerCase();return(activeCategory==="All"||s.category===activeCategory)&&(!term||[s.title,s.author,s.category,s.description].join(" ").toLowerCase().includes(term))});if(sortSelect.value==="title")list.sort((a,b)=>a.title.localeCompare(b.title));if(sortSelect.value==="rating")list.sort((a,b)=>b.rating-a.rating);if(sortSelect.value==="featured")list.sort((a,b)=>Number(b.featured)-Number(a.featured));document.getElementById("count").textContent=list.length+" stor"+(list.length===1?"y":"ies");if(!list.length){grid.innerHTML='<div class="empty"><div style="font-size:40px">🔎</div><h3>No stories found</h3><p>Try another search or category.</p></div>';return}grid.innerHTML=list.map(s=>{const saved=getBookmarks().includes(s.id),progress=getHistory()[s.id];const isDarkServer=String(s.title||"").trim().toLowerCase()==="the dark server";
-const coverSrc=s.cover_url||(isDarkServer?TALEVERSE_BOOK_WALLPAPER:"");
-const coverMarkup=coverSrc?`<div class="cover"><img src="${escapeHTML(coverSrc)}" alt="${escapeHTML(s.title)} wallpaper" style="width:100%;height:100%;object-fit:cover;display:block"></div>`:`<div class="cover" role="img" aria-label="${escapeHTML(s.title)} book artwork" style="background:${s.color||"linear-gradient(135deg,#202a3a,#3c536f)"}">${s.emoji||"📖"}</div>`;
-return `<article class="book">${coverMarkup}<div class="bookbody"><span class="tag">${escapeHTML(s.category)}</span><h3>${escapeHTML(s.title)}</h3><p>${escapeHTML(s.description)}</p><div class="bookbottom"><span class="muted" style="font-size:12px">★ ${Number(s.rating||0).toFixed(1)} ${saved?" · ☆":""}</span><button class="smallbtn" data-open="${escapeHTML(s.id)}">${progress?"Continue":"Read story"}</button></div></div></article>`}).join("")}
-function setCategory(category){activeCategory=category;document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("active",c.dataset.category===category));renderBooks();document.getElementById("discover").scrollIntoView({behavior:"smooth"})}
-function getChapterProgress(){try{return JSON.parse(localStorage.getItem("taleverse-chapter-progress")||"{}")}catch(e){return {}}}
-function renderChapterList(){if(!currentStory)return;const box=document.getElementById("chapterListPage");box.innerHTML=(currentStory.chapters||[]).map((c,i)=>`<div class="chapter-list-item"><div><strong>${escapeHTML(c.title||("Chapter "+(i+1)))}</strong><span class="muted tiny">Chapter ${i+1}</span></div><button class="primary smallbtn" type="button" data-open-chapter="${i}">Read chapter →</button></div>`).join("")||'<p class="muted">No chapters have been added yet.</p>'}
-function showBookOverview(){document.getElementById("bookOverviewPage").classList.remove("hidden");document.getElementById("chapterReadPage").classList.add("hidden");document.getElementById("readerTitle").textContent=currentStory?.title||"Story";document.getElementById("readerAuthor").textContent="By "+(currentStory?.author||"Unknown author")+" · "+(currentStory?.chapters?.length||0)+" chapter(s)";reader.querySelector(".dialog").scrollTop=0}
-function showChapterPage(index){if(!currentStory)return;const chapters=currentStory.chapters||[];if(index<0||index>=chapters.length)return;currentChapterIndex=index;const chapter=chapters[index];document.getElementById("bookOverviewPage").classList.add("hidden");document.getElementById("chapterReadPage").classList.remove("hidden");document.getElementById("readerTitle").textContent=chapter.title||("Chapter "+(index+1));document.getElementById("readerAuthor").textContent=currentStory.title+" · By "+currentStory.author;document.getElementById("chapterPosition").textContent="Chapter "+(index+1)+" of "+chapters.length;readtext.innerHTML="<p>"+escapeHTML(chapter.text||"")+"</p>";fontSize=18;readtext.style.fontSize=fontSize+"px";document.getElementById("smaller").onclick=()=>{fontSize=Math.max(14,fontSize-2);readtext.style.fontSize=fontSize+"px"};document.getElementById("larger").onclick=()=>{fontSize=Math.min(30,fontSize+2);readtext.style.fontSize=fontSize+"px"};document.getElementById("previousChapter").disabled=index===0;document.getElementById("nextChapter").textContent=index===chapters.length-1?"Finish book ✓":"Next chapter →";reader.querySelector(".dialog").scrollTop=0;const map=getChapterProgress();map[String(currentStory.id)]=index;save("taleverse-chapter-progress",map);document.getElementById("readingStatus").textContent="Chapter progress saved"}
-async function openStory(id){currentStory=stories.find(s=>String(s.id)===String(id));if(!currentStory)return;const opened=currentStory;document.getElementById("readerCategory").textContent=opened.category;document.getElementById("readerTitle").textContent=opened.title;document.getElementById("readerAuthor").textContent="By "+opened.author+" · "+opened.chapters.length+" chapter(s)";renderChapterList();showBookOverview();updateBookmarkButton();reader.classList.add("show");document.body.style.overflow="hidden";const savedIndex=Number(getChapterProgress()[String(id)]||0);currentChapterIndex=savedIndex;document.getElementById("readingStatus").textContent=savedIndex>0?"Continue from your last chapter":"Choose a chapter to begin";startReadingTimer();loadBookReviews();loadBookComments();if(readerUser)saveProgress()}
-function closeStory(){if(currentStory&&lastReadingTick){const elapsed=Math.min(30,Math.floor((Date.now()-lastReadingTick)/1000));if(elapsed>0)addReadingTime(elapsed)}stopReadingTimer();reader.classList.remove("show");document.body.style.overflow="";currentStory=null}
-let progressSaveTimer=null;function saveProgress(){if(!currentStory)return;const bookId=currentStory.id,pos=reader.querySelector(".dialog").scrollTop;const chapterMap=getChapterProgress();chapterMap[String(bookId)]=currentChapterIndex;save("taleverse-chapter-progress",chapterMap);const h=getHistory();h[bookId]=pos;save("taleverse-history",h);document.getElementById("readingStatus").textContent="Progress saved";if(readerUser){clearTimeout(progressSaveTimer);progressSaveTimer=setTimeout(async()=>{const {error}=await supabaseClient.from("reader_reading_history").upsert({user_id:readerUser.id,book_id:bookId,scroll_top:Math.round(pos),updated_at:new Date().toISOString()},{onConflict:"user_id,book_id"});if(error)console.error("Reading progress sync:",error)},800)}}
-async function loadReadingHistory(){const list=document.getElementById("readingHistoryList"),hint=document.getElementById("historyHint");if(!readerUser){hint.textContent="Sign in to sync your reading history across devices.";list.innerHTML="";return}hint.textContent="Your recent reading and last position are saved to your account.";list.textContent="Loading reading history…";const {data,error}=await supabaseClient.from("reader_reading_history").select("book_id,scroll_top,updated_at").eq("user_id",readerUser.id).order("updated_at",{ascending:false});if(error){list.textContent="Could not load reading history. Please check the reading-history SQL setup.";console.error(error);return}const rows=(data||[]).filter(row=>stories.some(book=>String(book.id)===String(row.book_id)));if(!rows.length){list.innerHTML="<p class=muted>You haven't started reading any books yet.</p>";return}list.innerHTML=rows.map(row=>{const book=stories.find(b=>String(b.id)===String(row.book_id));return `<article class="reviewitem"><strong>${escapeHTML(book.title)}</strong><p class="muted">Last read: ${new Date(row.updated_at).toLocaleString()}</p><button class="smallbtn" data-history-open="${escapeHTML(book.id)}">▶ Continue reading</button></article>`}).join("")}
-async function updateBookmarkButton(){if(!currentStory)return;let yes=false;if(readerUser){const {data}=await supabaseClient.from("reader_bookshelf").select("book_id").eq("user_id",readerUser.id).eq("book_id",currentStory.id).maybeSingle();yes=!!data}else{yes=getBookmarks().includes(currentStory.id)}document.getElementById("bookmarkBtn").textContent=yes?"★ In my favourites":"☆ Add to favourites"}
-async function loadOnlineBooks(){
- try{
-  const {data:books,error}=await supabaseClient
-   .from("books")
-   .select("id,title,slug,author,description,genre,cover_url,status,created_at")
-   .eq("status","published")
-   .order("created_at",{ascending:false});
-  if(error) throw error;
-
-  const ids=(books||[]).map(b=>b.id);
-  let chapterRows=[];
-  if(ids.length){
-   const result=await supabaseClient
-    .from("chapters")
-    .select("id,book_id,title,content,chapter_order")
-    .in("book_id",ids)
-    .order("chapter_order",{ascending:true});
-   if(result.error) throw result.error;
-   chapterRows=result.data||[];
-  }
-
-  // Supabase is the source of truth; deleted starter books stay deleted.
-  stories=(books||[]).map(b=>({
-   id:b.id,slug:b.slug,title:b.title,author:b.author||"Unknown author",
-   category:b.genre||"Other",created_at:b.created_at,emoji:"📖",color:colorFor(b.genre),
-   rating:0,featured:false,description:b.description||"",cover_url:b.cover_url,
-   chapters:chapterRows.filter(c=>c.book_id===b.id).map(c=>({title:c.title,text:c.content}))
-  }));
-  renderBooks();
-  renderLearnFeed();
- }catch(error){
-  console.error("TaleVerse load error:",error);
-  stories=[];
-  renderBooks();
-  showToast("Could not load online books. Please refresh and try again.");
- }
-}
-function updateAdminButtonVisibility(){const button=document.getElementById("adminBtn");const adminEntry=new URLSearchParams(window.location.search).get("admin")==="1";button.style.display=(isAdmin||adminEntry)?"inline-flex":"none"}
-async function refreshAdminState(){const {data:{session}}=await supabaseClient.auth.getSession();currentUser=session?.user||null;readerUser=currentUser;updateReaderAccountUI();const panel=document.getElementById("adminPanel");isAdmin=false;if(!currentUser){document.getElementById("tvAdminLink")?.classList.add("hidden");panel.classList.add("hidden");document.getElementById("adminBtn").textContent="Admin login";updateAdminButtonVisibility();return}const {data:adminRow}=await supabaseClient.from("app_admins").select("user_id").eq("user_id",currentUser.id).maybeSingle();if(!adminRow){document.getElementById("tvAdminLink")?.classList.add("hidden");panel.classList.add("hidden");document.getElementById("adminBtn").textContent="Admin login";updateAdminButtonVisibility();return}isAdmin=true;document.getElementById("tvAdminLink")?.classList.remove("hidden");document.getElementById("adminEmail").textContent=currentUser.email||"";panel.classList.remove("hidden");document.getElementById("adminBtn").textContent="Admin panel";updateAdminButtonVisibility();await loadAdminBooks()}
-let adminBooksCache=[],isAdmin=false,readerUser=null,readerSignUpMode=true;
-function htmlSafe(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
-async function importStarterStories(){
- if(!currentUser){showToast("Log in as admin first.");return}
- const button=document.getElementById("importStarterStoriesBtn"),status=document.getElementById("importStarterStatus");
- if(!confirm("Import all built-in TaleVerse stories into Supabase? Existing imports will be skipped."))return;
- button.disabled=true;button.textContent="Importing…";status.textContent="Checking which stories still need importing…";
- try{
-  const {data:existing,error:checkError}=await supabaseClient.from("books").select("slug");
-  if(checkError)throw checkError;
-  const existingSlugs=new Set((existing||[]).map(b=>b.slug));let imported=0,skipped=0;
-  for(const story of starterStories){
-   const slug="starter-"+story.id;
-   if(existingSlugs.has(slug)){skipped++;continue}
-   const {data:book,error:bookError}=await supabaseClient.from("books").insert({title:story.title,slug,author:story.author||"TaleVerse Library",description:story.description||"",genre:story.category||"Other",status:"published",created_by:currentUser.id,published_at:new Date().toISOString()}).select("id").single();
-   if(bookError)throw new Error("Could not import "+story.title+": "+bookError.message);
-   const chapters=(story.chapters||[]).map((chapter,index)=>({book_id:book.id,title:chapter.title,content:chapter.text,chapter_order:index+1}));
-   if(chapters.length){const {error:chapterError}=await supabaseClient.from("chapters").insert(chapters);if(chapterError){await supabaseClient.from("books").delete().eq("id",book.id);throw new Error("Could not import chapters for "+story.title+": "+chapterError.message)}}
-   existingSlugs.add(slug);imported++;
-  }
-  await loadOnlineBooks();await loadAdminBooks();
-  status.textContent=`Finished: ${imported} imported, ${skipped} already existed.`;
-  showToast(`Import complete: ${imported} imported, ${skipped} skipped.`);
- }catch(error){console.error(error);status.textContent="Import stopped: "+error.message;showToast("Import failed: "+error.message)}
- finally{button.disabled=false;button.textContent="Import original stories"}
-}
-async function loadAdminBooks(){if(!currentUser)return;const box=document.getElementById("adminBookList"),select=document.getElementById("manageBookSelect");box.innerHTML='<p class="muted">Loading books…</p>';const {data,error}=await supabaseClient.from("books").select("id,title,author,genre,status,created_at").order("created_at",{ascending:false});if(error){box.textContent="Could not load books: "+error.message;return}adminBooksCache=data||[];if(!adminBooksCache.length){box.innerHTML='<p class="muted">No online books yet. Publish your first book above.</p>';select.innerHTML='<option value="">No books available</option>';document.getElementById("chapterManager").innerHTML='<p class="muted">Publish a book first.</p>';return}box.innerHTML=adminBooksCache.map(b=>`<div class="adminitem"><div><strong>${htmlSafe(b.title)}</strong><div class="muted tiny">${htmlSafe(b.author||"Unknown author")} · ${htmlSafe(b.genre||"Other")} · ${htmlSafe(b.status)}</div></div><div class="actions"><button class="secondary smallbtn" data-manage-book="${b.id}">Manage chapters</button><button class="secondary smallbtn" data-delete-book="${b.id}">Delete book</button></div></div>`).join("");const old=select.value;select.innerHTML='<option value="">Choose a published book</option>'+adminBooksCache.map(b=>`<option value="${b.id}">${htmlSafe(b.title)}</option>`).join("");if(old&&adminBooksCache.some(b=>b.id===old)){select.value=old;await loadAdminChapters(old)}}
-async function loadAdminChapters(bookId){const box=document.getElementById("chapterManager");if(!bookId){box.innerHTML='<p class="muted">Choose a book to manage its chapters.</p>';return}box.innerHTML='<p class="muted">Loading chapters…</p>';const {data,error}=await supabaseClient.from("chapters").select("id,title,content,chapter_order").eq("book_id",bookId).order("chapter_order",{ascending:true});if(error){box.textContent="Could not load chapters: "+error.message;return}if(!data?.length){box.innerHTML='<p class="muted">This book has no chapters yet. Add one below.</p>';return}box.innerHTML=data.map((c,i)=>`<div class="chapteredit"><strong>Chapter ${i+1}</strong><label>Chapter title</label><input id="chapter-title-${c.id}" value="${htmlSafe(c.title)}"><label>Chapter content</label><textarea id="chapter-content-${c.id}">${htmlSafe(c.content)}</textarea><div class="actions"><button class="primary smallbtn" data-save-chapter="${c.id}">Save chapter</button><button class="secondary smallbtn" data-delete-chapter="${c.id}">Delete chapter</button></div></div>`).join("")}
-async function deleteOnlineBook(id){
- const book=adminBooksCache.find(b=>b.id===id);
- if(!book||!confirm(`Delete “${book.title}” and all its chapters? This cannot be undone.`))return;
-
- const deleteButton=document.querySelector(`[data-delete-book="${id}"]`);
- if(deleteButton){deleteButton.disabled=true;deleteButton.textContent="Deleting…";}
-
- try{
-  const {error:chapterError}=await supabaseClient
-   .from("chapters")
-   .delete()
-   .eq("book_id",id);
-  if(chapterError) throw new Error("Could not delete chapters: "+chapterError.message);
-
-  const {data:deletedBooks,error:bookError}=await supabaseClient
-   .from("books")
-   .delete()
-   .eq("id",id)
-   .select("id");
-
-  if(bookError) throw new Error("Could not delete the book: "+bookError.message);
-
-  if(!deletedBooks||deletedBooks.length===0){
-   throw new Error("Supabase did not delete this book. Its DELETE policy or is_admin() check may be blocking the request.");
-  }
-
-  stories=stories.filter(s=>String(s.id)!==String(id));
-  const history=getHistory();
-  delete history[id];
-  save("taleverse-history",history);
-  save("taleverse-bookmarks",getBookmarks().filter(bookmark=>String(bookmark)!==String(id)));
-
-  document.getElementById("manageBookSelect").value="";
-  document.getElementById("chapterManager").innerHTML='<p class="muted">Choose a book to manage its chapters.</p>';
-  await loadAdminBooks();
-  await loadOnlineBooks();
-  showToast("Book deleted successfully.");
- }catch(error){
-  console.error("TaleVerse delete error:",error);
-  await loadAdminBooks();
-  await loadOnlineBooks();
-  showToast(error.message);
- }
-}
-document.getElementById("importStarterStoriesBtn").addEventListener("click",importStarterStories);
-document.getElementById("adminBookList").addEventListener("click",async e=>{const manage=e.target.closest("[data-manage-book]"),del=e.target.closest("[data-delete-book]");if(manage){const id=manage.dataset.manageBook;document.getElementById("manageBookSelect").value=id;await loadAdminChapters(id);document.getElementById("chapterManager").scrollIntoView({behavior:"smooth",block:"start"})}if(del)await deleteOnlineBook(del.dataset.deleteBook)});
-document.getElementById("manageBookSelect").addEventListener("change",e=>loadAdminChapters(e.target.value));
-document.getElementById("chapterManager").addEventListener("click",async e=>{const saveBtn=e.target.closest("[data-save-chapter]"),delBtn=e.target.closest("[data-delete-chapter]");if(saveBtn){const id=saveBtn.dataset.saveChapter,title=document.getElementById("chapter-title-"+id).value.trim(),content=document.getElementById("chapter-content-"+id).value.trim();if(!title||!content){showToast("Enter both a chapter title and content.");return}const {error}=await supabaseClient.from("chapters").update({title,content}).eq("id",id);if(error){showToast("Could not save chapter: "+error.message);return}await loadOnlineBooks();showToast("Chapter updated.")}if(delBtn){const id=delBtn.dataset.deleteChapter;if(!confirm("Delete this chapter? This cannot be undone."))return;const {error}=await supabaseClient.from("chapters").delete().eq("id",id);if(error){showToast("Could not delete chapter: "+error.message);return}await loadAdminChapters(document.getElementById("manageBookSelect").value);await loadOnlineBooks();showToast("Chapter deleted.")}});
-document.getElementById("addChapterForm").addEventListener("submit",async e=>{e.preventDefault();const bookId=document.getElementById("manageBookSelect").value,title=document.getElementById("newChapterTitle").value.trim(),content=document.getElementById("newChapterContent").value.trim();if(!bookId){showToast("Choose a book first.");return}if(!title||!content){showToast("Enter the chapter title and content.");return}const {data:last,error:lastError}=await supabaseClient.from("chapters").select("chapter_order").eq("book_id",bookId).order("chapter_order",{ascending:false}).limit(1).maybeSingle();if(lastError){showToast("Could not check chapter order: "+lastError.message);return}const {error}=await supabaseClient.from("chapters").insert({book_id:bookId,title,content,chapter_order:(last?.chapter_order||0)+1});if(error){showToast("Could not add chapter: "+error.message);return}e.target.reset();await loadAdminChapters(bookId);await loadOnlineBooks();showToast("New chapter added.")});
-document.getElementById("saveGoalBtn").addEventListener("click",()=>{const value=Math.min(300,Math.max(1,Number(document.getElementById("dailyGoal").value)||15));save("taleverse-daily-goal",value);renderReadingTracker();showToast("Daily reading goal saved.")});
-document.getElementById("categories").addEventListener("click",e=>{const c=e.target.closest("[data-category]");if(c)setCategory(c.dataset.category)});grid.addEventListener("click",e=>{const b=e.target.closest("[data-open]");if(b)openStory(b.dataset.open)});searchInput.addEventListener("input",renderBooks);sortSelect.addEventListener("change",renderBooks);
-document.getElementById("themeBtn").addEventListener("click",()=>{document.body.classList.toggle("dark");const dark=document.body.classList.contains("dark");document.getElementById("themeBtn").textContent=dark?"☀️":"🌙";try{localStorage.setItem("taleverse-theme",dark?"dark":"light")}catch(e){}});
-document.getElementById("closeReader").addEventListener("click",closeStory);
-document.getElementById("chapterListPage").addEventListener("click",e=>{const b=e.target.closest("[data-open-chapter]");if(b)showChapterPage(Number(b.dataset.openChapter))});
-document.getElementById("backToChapters").addEventListener("click",showBookOverview);
-document.getElementById("previousChapter").addEventListener("click",()=>showChapterPage(currentChapterIndex-1));
-document.getElementById("nextChapter").addEventListener("click",()=>{if(currentStory&&currentChapterIndex===currentStory.chapters.length-1){markCurrentBookComplete();showBookOverview()}else showChapterPage(currentChapterIndex+1)});
-document.getElementById("fullscreenBtn").addEventListener("click",async()=>{try{if(!document.fullscreenElement)await reader.requestFullscreen();else await document.exitFullscreen()}catch(e){showToast("Full screen is not available in this browser.")}});
-document.addEventListener("fullscreenchange",()=>{document.getElementById("fullscreenBtn").textContent=document.fullscreenElement?"⛶ Exit full screen":"⛶ Full screen"});
-reader.addEventListener("click",e=>{if(e.target===reader)closeStory()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeStory()});
-document.getElementById("larger").addEventListener("click",()=>{fontSize=Math.min(28,fontSize+2);readtext.style.fontSize=fontSize+"px"});document.getElementById("smaller").addEventListener("click",()=>{fontSize=Math.max(14,fontSize-2);readtext.style.fontSize=fontSize+"px"});
-document.getElementById("bookmarkBtn").addEventListener("click",toggleFavourite);
-reader.querySelector(".dialog").addEventListener("scroll",()=>{if(currentStory){saveProgress();const box=reader.querySelector(".dialog");if(currentChapterIndex===(currentStory.chapters.length-1)&&box.scrollTop+box.clientHeight>=box.scrollHeight-80)markCurrentBookComplete()}});
-document.getElementById("readerAccountBtn").addEventListener("click",()=>{if(!readerUser){showReaderAuthPage();return}renderReaderDashboard()});document.getElementById("profileForm").addEventListener("submit",saveMyPublicProfile);document.getElementById("profileAvatarFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{profileAvatarData=await compressProfileAvatar(f);document.getElementById("profileAvatarPreview").src=profileAvatarData}catch(err){showToast(err.message)}});document.getElementById("viewMyProfileBtn").addEventListener("click",()=>{const u=document.getElementById("profileUsername").value.trim();if(!u){showToast("Save a username first.");return}document.getElementById("readerAccountModal").classList.remove("show");showPublicProfile(u)});document.getElementById("closePublicProfile").addEventListener("click",()=>document.getElementById("publicProfileModal").classList.remove("show"));document.getElementById("findPublicProfileBtn").addEventListener("click",()=>{const u=document.getElementById("findProfileUsername").value.trim();if(!u){showToast("Enter a username first.");return}document.getElementById("readerAccountModal").classList.remove("show");showPublicProfile(u)});document.getElementById("closeReaderAccount").addEventListener("click",()=>document.getElementById("readerAccountModal").classList.remove("show"));document.getElementById("readerAuthSwitch").addEventListener("click",()=>{readerSignUpMode=!readerSignUpMode;updateReaderAccountUI()});document.getElementById("readerAuthForm").addEventListener("submit",submitReaderAuth);document.getElementById("openShelfBtn").addEventListener("click",loadMyBookshelf);document.getElementById("openHistoryBtn").addEventListener("click",loadReadingHistory);document.getElementById("readingHistoryList").addEventListener("click",e=>{const b=e.target.closest("[data-history-open]");if(b){document.getElementById("readerAccountModal").classList.remove("show");openStory(b.dataset.historyOpen)}});document.getElementById("myShelfList").addEventListener("click",e=>{const open=e.target.closest("[data-shelf-open]");const remove=e.target.closest("[data-shelf-remove]");if(open){document.getElementById("readerAccountModal").classList.remove("show");openStory(open.dataset.shelfOpen)}if(remove){const id=remove.dataset.shelfRemove;supabaseClient.from("reader_bookshelf").delete().eq("user_id",readerUser.id).eq("book_id",id).then(({error})=>{if(error)showToast("Could not remove book: "+error.message);else{loadMyBookshelf();renderBooks();if(currentStory&&String(currentStory.id)===String(id))updateBookmarkButton()}})}});document.getElementById("readerSignOutBtn").addEventListener("click",async()=>{await supabaseClient.auth.signOut();readerUser=null;currentUser=null;isAdmin=false;updateReaderAccountUI();await loadMyBookshelf();await loadReadingHistory();if(currentStory){await loadBookReviews();await loadBookComments()}document.getElementById("readerAccountModal").classList.remove("show");showToast("You have signed out.")});document.getElementById("reviewForm").addEventListener("submit",saveBookReview);document.getElementById("deleteReviewBtn").addEventListener("click",deleteBookReview);document.getElementById("bookCommentForm").addEventListener("submit",postBookComment);document.getElementById("bookDiscussionList").addEventListener("click",handleBookCommentAction);document.getElementById("bookDiscussionList").addEventListener("submit",e=>{if(e.target.matches(".commentreplyform")){e.preventDefault();postBookComment(e)}});
-document.getElementById("adminBtn").addEventListener("click",async()=>{if(isAdmin){if(document.body.classList.contains("dashboard-mode")){dashOpenPage("admin")}else{document.getElementById("adminPanel").classList.remove("hidden");document.getElementById("adminPanel").scrollIntoView({behavior:"smooth"})}return}document.getElementById("loginModal").classList.add("show")});
-document.getElementById("closeLogin").addEventListener("click",()=>document.getElementById("loginModal").classList.remove("show"));
-document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showToast("Login failed: "+error.message);return}document.getElementById("loginModal").classList.remove("show");await refreshAdminState();if(currentUser){showToast("Admin login successful.");if(isAdmin&&document.body.classList.contains("dashboard-mode")){dashOpenPage("admin")}else{document.getElementById("adminPanel").classList.remove("hidden");document.getElementById("adminPanel").scrollIntoView({behavior:"smooth"})}}});
-document.getElementById("logoutBtn").addEventListener("click",async()=>{await supabaseClient.auth.signOut();await refreshAdminState();showToast("Logged out.")});
-async function compressBookWallpaper(file){
- if(!file)return null;
- if(!file.type.startsWith("image/"))throw new Error("Please choose an image file.");
- const dataUrl=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Could not read the selected image."));reader.readAsDataURL(file);});
- const img=await new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error("That image could not be opened."));image.src=dataUrl;});
- const maxSide=1200,scale=Math.min(1,maxSide/Math.max(img.width,img.height));
- const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
- canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
- return canvas.toDataURL("image/jpeg",0.82);
-}
-document.getElementById("publishForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!currentUser){showToast("Please log in first.");return}
- const title=document.getElementById("bookTitle").value.trim(),author=document.getElementById("bookAuthor").value.trim(),genre=document.getElementById("bookGenre").value,description=document.getElementById("bookDescription").value.trim(),chapterTitle=document.getElementById("chapterTitle").value.trim(),content=document.getElementById("chapterContent").value.trim(),wallpaperFile=document.getElementById("bookWallpaper").files[0];
- let slug=document.getElementById("bookSlug").value.trim().toLowerCase();if(!slug)slug=title.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
- const button=e.submitter;button.disabled=true;button.textContent="Publishing…";
- try{
-  const cover_url=await compressBookWallpaper(wallpaperFile);
-  const {data:book,error:bookError}=await supabaseClient.from("books").insert({title,slug,author,description,genre,cover_url,status:"published",created_by:currentUser.id,published_at:new Date().toISOString()}).select("id").single();
-  if(bookError)throw bookError;
-  const {error:chapterError}=await supabaseClient.from("chapters").insert({book_id:book.id,title:chapterTitle,content,chapter_order:1});
-  if(chapterError){showToast("Book saved, but chapter failed: "+chapterError.message);throw chapterError}
-  e.target.reset();await loadOnlineBooks();await loadAdminBooks();showToast("Your book has been published!");
- }catch(error){console.error(error);showToast("Publish failed: "+(error.message||"Check Supabase policies and table columns."))}
- finally{button.disabled=false;button.textContent="Publish book"}
-});
-
-let avatarMakerBg="#f1d6bd";
-function updateAvatarMaker(){const emoji=document.getElementById("avatarEmoji")?.value||"📚",box=document.getElementById("avatarMakerPreview");if(box){box.textContent=emoji;box.style.background=avatarMakerBg}}
-document.getElementById("avatarEmoji")?.addEventListener("change",updateAvatarMaker);
-document.querySelectorAll("[data-avatar-bg]").forEach(b=>b.addEventListener("click",()=>{avatarMakerBg=b.dataset.avatarBg;updateAvatarMaker()}));
-document.getElementById("useCreatedAvatar")?.addEventListener("click",()=>{const emoji=document.getElementById("avatarEmoji").value;const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><rect width="100%" height="100%" rx="120" fill="${avatarMakerBg}"/><text x="50%" y="57%" font-size="132" text-anchor="middle">${emoji}</text></svg>`;profileAvatarData="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);document.getElementById("profileAvatarPreview").src=profileAvatarData;showToast("Avatar selected. Save your profile to publish it.")});
-document.getElementById("tvSignOut")?.addEventListener("click",()=>document.getElementById("dashSignOut").click());
-document.addEventListener("click",e=>{const b=e.target.closest("[data-tv-page]");if(b){document.querySelectorAll("#tvSidebar [data-tv-page]").forEach(x=>x.classList.toggle("active",x===b));if(b.dataset.tvPage==="learn"){history.pushState({dashPage:null},"",location.pathname+location.search+"#dashboard");renderReaderDashboard()}else dashOpenPage(b.dataset.tvPage)}});
-async function loadFriendsPage(){
- const reqBox=document.getElementById("friendRequestsList"),friendsBox=document.getElementById("myFriendsList"),sharedBox=document.getElementById("sharedBooksList");
- if(!readerUser)return;
- const {data:incoming,error}=await supabaseClient.from("reader_friend_requests").select("id,sender_id,receiver_id,status").eq("receiver_id",readerUser.id).eq("status","pending");
- if(error){reqBox.innerHTML='<p class="muted">Friend features need the TaleVerse social tables and policies in Supabase. Run the setup SQL provided with this update.</p>';friendsBox.innerHTML="";sharedBox.innerHTML="";return}
- const ids=(incoming||[]).map(x=>x.sender_id);let senders=[];
- if(ids.length){const r=await supabaseClient.from("reader_profiles").select("user_id,username,avatar_url").in("user_id",ids);senders=r.data||[]}
- reqBox.innerHTML=(incoming||[]).length?(incoming||[]).map(r=>{const u=senders.find(x=>x.user_id===r.sender_id)||{};return `<div class="community-item"><img src="${dashEsc(u.avatar_url||"")}" alt=""><strong>${dashEsc(u.username||"TaleVerse reader")}</strong><div class="community-actions"><button class="smallbtn" data-friend-accept="${r.id}">Accept</button><button class="secondary" data-friend-decline="${r.id}">Decline</button></div></div>`}).join(""):'<p class="muted">No new friend requests.</p>';
- const {data:accepted}=await supabaseClient.from("reader_friend_requests").select("id,sender_id,receiver_id,status").eq("status","accepted").or(`sender_id.eq.${readerUser.id},receiver_id.eq.${readerUser.id}`);
- const friendIds=[...new Set((accepted||[]).map(x=>x.sender_id===readerUser.id?x.receiver_id:x.sender_id))];let profiles=[];
- if(friendIds.length){const r=await supabaseClient.from("reader_profiles").select("user_id,username,avatar_url").in("user_id",friendIds);profiles=r.data||[]}
- friendsBox.innerHTML=profiles.length?profiles.map(u=>`<div class="community-item"><img src="${dashEsc(u.avatar_url||"")}" alt=""><strong>${dashEsc(u.username)}</strong><div class="community-actions"><button class="secondary" data-friend-share="${dashEsc(u.user_id)}">Send a book</button></div></div>`).join(""):'<p class="muted">Your friends will appear here after they accept your requests.</p>';
- const {data:shares,error:shareErr}=await supabaseClient.from("reader_shared_books").select("id,sender_id,book_id,message,created_at").eq("receiver_id",readerUser.id).order("created_at",{ascending:false});
- if(shareErr){sharedBox.innerHTML='<p class="muted">Book sharing is not set up yet. Run the social setup SQL.</p>';return}
- sharedBox.innerHTML=(shares||[]).length?(shares||[]).map(sh=>{const book=stories.find(b=>String(b.id)===String(sh.book_id));return `<div class="community-item"><span class="community-avatar">📚</span><div><strong>${dashEsc(book?.title||"Shared book")}</strong><p class="muted">${dashEsc(sh.message||"A friend shared this book with you.")}</p></div><div class="community-actions">${book?`<button class="smallbtn" data-shared-open="${dashEsc(book.id)}">Read book</button>`:""}</div></div>`}).join(""):'<p class="muted">No books have been shared with you yet.</p>';
-}
-document.getElementById("dashPageContent")?.addEventListener("click",async e=>{
- const accept=e.target.closest("[data-friend-accept]"),decline=e.target.closest("[data-friend-decline]"),share=e.target.closest("[data-friend-share]"),open=e.target.closest("[data-shared-open]");
- if(accept||decline){const id=accept?accept.dataset.friendAccept:decline.dataset.friendDecline;const {error}=await supabaseClient.from("reader_friend_requests").update({status:accept?"accepted":"declined",updated_at:new Date().toISOString()}).eq("id",id).eq("receiver_id",readerUser.id);if(error)showToast("Could not update request: "+error.message);else loadFriendsPage()}
- if(share){const friendId=share.dataset.friendShare;const bookName=prompt("Enter the exact title of the book you want to share:");if(!bookName)return;const book=stories.find(b=>b.title.toLowerCase()===bookName.trim().toLowerCase());if(!book){showToast("I couldn't find that book title.");return}const message=prompt("Add a short message (optional):")||"";const {error}=await supabaseClient.from("reader_shared_books").insert({sender_id:readerUser.id,receiver_id:friendId,book_id:book.id,message});if(error)showToast("Could not share book: "+error.message);else showToast("Book shared with your friend!")}
- if(open)openStory(open.dataset.sharedOpen);
-});
-document.getElementById("dashPageContent")?.addEventListener("click",async e=>{
- if(e.target.id==="friendSearchBtn"){const username=document.getElementById("friendSearchName").value.trim(),out=document.getElementById("friendSearchResult");if(!username)return;const {data,error}=await supabaseClient.from("reader_profiles").select("user_id,username,avatar_url").ilike("username",username).neq("user_id",readerUser.id).maybeSingle();if(error||!data){out.innerHTML='<p class="muted">Reader not found. Ask them to create a public profile first.</p>';return}out.innerHTML=`<div class="community-item"><img src="${dashEsc(data.avatar_url||"")}" alt=""><strong>${dashEsc(data.username)}</strong><div class="community-actions"><button class="primary" id="sendFriendRequest" data-reader-id="${dashEsc(data.user_id)}">Add friend</button></div></div>`}
- if(e.target.id==="sendFriendRequest"){const receiver=e.target.dataset.readerId;const {error}=await supabaseClient.from("reader_friend_requests").insert({sender_id:readerUser.id,receiver_id:receiver,status:"pending"});if(error)showToast("Could not send request: "+error.message);else{showToast("Friend request sent!");e.target.disabled=true;e.target.textContent="Request sent"}}
-});
-
-document.getElementById("dashBack").addEventListener("click",()=>{restoreAdminPanelHome();history.pushState({dashPage:null},"",location.pathname+location.search+"#dashboard");renderReaderDashboard()});
-document.getElementById("dashSignOut").addEventListener("click",async()=>{await supabaseClient.auth.signOut();readerUser=null;document.body.classList.remove("dashboard-mode");document.getElementById("readerDashboard").classList.add("hidden");showReaderAuthPage();updateReaderAccountUI()});document.addEventListener("click",e=>{const b=e.target.closest("[data-dash-page]");if(b){e.preventDefault();dashOpenPage(b.dataset.dashPage)}});
-try{if(localStorage.getItem("taleverse-theme")==="dark"){document.body.classList.add("dark");document.getElementById("themeBtn").textContent="☀️"}}catch(e){}
-document.getElementById("year").textContent=new Date().getFullYear();
-renderBooks();
-renderReadingTracker();
-const authForm=document.getElementById("readerAuthForm"),authStatus=document.getElementById("readerAuthStatus");
-if(authForm)document.getElementById("authFormMount").appendChild(authForm);
-if(authStatus)document.getElementById("authFormMount").appendChild(authStatus);
-updateReaderAccountUI();
-loadOnlineBooks();
-refreshAdminState();
-renderStandalonePublicProfile();
-// Route readers to the correct first page: login/signup when signed out, dashboard when signed in.
-supabaseClient.auth.onAuthStateChange((event,session)=>{
- readerUser=session?.user||null;
- setTimeout(async()=>{
-  await refreshAdminState();
-  await loadMyBookshelf();
-  await loadReadingHistory();
-  if(currentStory){await loadBookReviews();await loadBookComments()}
-  if(readerUser){
-   document.getElementById("readerAccountModal").classList.remove("show");
-   const match=location.hash.match(/^#dashboard\/(.+)$/);
-   if(match)dashOpenPage(decodeURIComponent(match[1]),true);else renderReaderDashboard();
-  }else if(!new URLSearchParams(location.search).has("profile")){
-   showReaderAuthPage();
-  }
- },0);
-});
-supabaseClient.auth.getSession().then(async({data})=>{
- readerUser=data?.session?.user||null;
- if(readerUser){
-  await refreshAdminState();
-  await loadMyBookshelf();
-  await loadReadingHistory();
-  const match=location.hash.match(/^#dashboard\/(.+)$/);
-  if(match)dashOpenPage(decodeURIComponent(match[1]),true);else renderReaderDashboard();
- }else if(!new URLSearchParams(location.search).has("profile")){
-  showReaderAuthPage();
- }
-});
-window.addEventListener("popstate",()=>{
- if(!readerUser)return;
- const match=location.hash.match(/^#dashboard\/(.+)$/);
- if(match)dashOpenPage(decodeURIComponent(match[1]),true);else renderReaderDashboard();
-});
-</script>
-</body>
-</html>
+else if(page==="friends"){title="Friends";content.innerHTML=`<div class="community-panel"><h3>Find readers</h3><p class="muted">Search for a TaleVerse reader by their public username and send a friend request.</p><inp
